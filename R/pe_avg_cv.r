@@ -55,7 +55,7 @@ pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended",
   if(fit_type[1] == "not_detrended") {
     cv_single_asset <- mean(apply(x, 2, cv))
     cv_portfolio <- cv(rowSums(x))
-    pe <- cv_portfolio / cv_single_asset
+    pe <- cv_single_asset / cv_portfolio
   }
   
   if(fit_type[1] == "linear_detrended") {
@@ -69,7 +69,7 @@ pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended",
     sd_portfolio <- sd(residuals(lm(rowSums(x)~c(1:nrow(x)))))
     mean_portfolio <- mean(rowSums(x))
     cv_portfolio <- sd_portfolio / mean_portfolio
-    pe <- cv_portfolio / cv_single_asset
+    pe <- cv_single_asset / cv_portfolio
   }
   
   if(fit_type[1] == "loess_detrended") {
@@ -83,19 +83,23 @@ pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended",
     sd_portfolio <- sd(residuals(loess(rowSums(x)~c(1:nrow(x)))))
     mean_portfolio <- mean(rowSums(x))
     cv_portfolio <- sd_portfolio / mean_portfolio
-    pe <- cv_portfolio / cv_single_asset
+    pe <- cv_single_asset / cv_portfolio
   }
   
   pe_avg_cv_for_boot <- function(x) {
     cv_single_asset <- mean(apply(x, 2, cv))
     cv_portfolio <- cv(rowSums(x))
-    pe <- cv_portfolio / cv_single_asset
-    #pe
+    pe <- cv_single_asset / cv_portfolio
+    pe
   }
+
   if(ci) {
     ## confidence interval calculation
     boot.out <- boot(t(x), function(y, i) pe_avg_cv_for_boot(t(y[i,])), R = boot_reps)
     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
-    list(pe = pe, ci = pe_ci)
-  } else pe
+    out <- list(pe = pe, ci = pe_ci)
+  }else{
+    out <- pe
+  }
+  out
 }

@@ -149,7 +149,7 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     single_asset_variance <- exp(as.numeric(single_asset_variance_predict))
   }
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
-  pe <- as.numeric(cv_portfolio / cv_single_asset)
+  pe <- as.numeric(cv_single_asset / cv_portfolio)
   
   if(ci == TRUE & boot == FALSE) {
     single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
@@ -171,7 +171,7 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     single_asset_variance <- exp(single_asset_variance_predict$fit)
     cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
     cv_portfolio <- cv(rowSums(x))
-    pe <- cv_portfolio / cv_single_asset
+    pe <- cv_single_asset / cv_portfolio
   }
   
   if(ci == TRUE & boot == TRUE) {
