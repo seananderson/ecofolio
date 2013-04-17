@@ -61,52 +61,59 @@
 
 pe_mv <- function
 (x, fit_type = c("linear", "linear_robust", "quadratic",
-    "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
-  FALSE, boot = FALSE, boot_reps = 1000
+  "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
+    FALSE, boot = FALSE, boot_reps = 1000
 )
 {
   require(MuMIn) # for AICc
   require(robustbase) # for lmrob
-
-## first get the means:
+  
+  ## first get the means:
   m <- apply(x, 2, mean)
   single_asset_mean <- mean(rowSums(x))
   cv_portfolio <- cv(rowSums(x))
-
-## now detrend if desired:
+  
+  ## now detrend if desired:
   if(fit_type == "linear_detrended") {
-## first get cv of detrended portfolio abundance:
+    ## first get cv of detrended portfolio abundance:
     sd_portfolio <- sd(residuals(lm(rowSums(x)~c(1:nrow(x)))))
     mean_portfolio <- mean(rowSums(x))
     cv_portfolio <- sd_portfolio / mean_portfolio
-## now detrend:
+    ## now detrend:
     x <- apply(x, 2, function(y) residuals(lm(y~c(1:length(y)))))
   }
   if(fit_type == "loess_detrended") {
-## first get CV of detrended portfolio abundance:
+    ## first get CV of detrended portfolio abundance:
     sd_portfolio <- sd(residuals(loess(rowSums(x)~c(1:nrow(x)))))
     mean_portfolio <- mean(rowSums(x))
     cv_portfolio <- sd_portfolio / mean_portfolio
-## now detrend:
+    ## now detrend:
     x <- apply(x, 2, function(y) residuals(loess(y~c(1:length(y)))))
   }
   
-## and get the variances for the assets:
+  ## and get the variances for the assets:
   v <- apply(x, 2, var)
-
+  
   log.m <- log(m)
   log.v <- log(v)
   d <- data.frame(log.m = log.m, log.v = log.v, m = m, v = v)
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
-    linear_robust = lmrob(log.v ~ log.m, data = d, control = lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
+    linear_robust = lmrob(log.v ~ log.m, data = d, control =
+        lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
     # using nls so we can restrict the quadratic term to be >= 0
-    quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port"),
+    quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
+      = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
+          -1e9, B1 = 0, B2 = 0), algorithm = "port"),
     linear_detrended = lm(log.v ~ log.m, data = d),
     loess_detrended = lm(log.v ~ log.m, data = d),
     linear_quad_avg = {
-    linear = nls(log.v ~ B0 + B1 * log.m, data = d, start = list(B0 = 0, B1 = 2), lower = list(B0 = -1e9, B1 = 0), algorithm = "port")
-    quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port")
+      linear = nls(log.v ~ B0 + B1 * log.m, data = d, start = list(B0 =
+          0, B1 = 2), lower = list(B0 = -1e9, B1 = 0), algorithm =
+          "port")
+      quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
+        = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
+            -1e9, B1 = 0, B2 = 0), algorithm = "port")
       require(MuMIn)
       avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
       if(MuMIn::AICc(quadratic) < MuMIn::AICc(linear)) print("AICc quad is lower")
@@ -114,55 +121,50 @@ pe_mv <- function
       avg.mod
     }
   )
-
-  single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)), se = TRUE)
+  
+  single_asset_variance_predict <- predict(taylor_fit, newdata =
+      data.frame(log.m = log(single_asset_mean)), se = TRUE)
   if(fit_type %in% c("quadratic", "linear_quad_avg")) 
     single_asset_variance <- exp(as.numeric(single_asset_variance_predict))
   else
     single_asset_variance <- exp(single_asset_variance_predict$fit)
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
   pe <- as.numeric(cv_portfolio / cv_single_asset)
-
+  
   if(ci == TRUE & boot == FALSE) {
-
+    
     require(MuMIn)
     if(fit_type %in% c("quadratic")) {
       single_asset_variance_sims <- predict_quad_gelm(taylor_fit, n.sims = n_gelman_hill_sims,
-                                                      single_asset_mean = single_asset_mean)
+        single_asset_mean = single_asset_mean)
       single_asset_variance_ci <- exp(quantile(single_asset_variance_sims, prob = c(0.025, 0.975)))
       cv_single_asset_ci <- as.numeric(sqrt(single_asset_variance_ci) / single_asset_mean)
       pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
       pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
       out <- list(pe = pe, ci = pe_ci)
-    } else {
+    }else{
       if(fit_type %in% c("linear_quad_avg")) {
-        linear <- nls(log.v ~ B0 + B1 * log.m, data = d, start = list(B0 = 0, B1 = 2), lower = list(B0 = -1e9, B1 = 0), algorithm = "port")
-      linear_AICc <- MuMIn::AICc(linear)
-        quadratic <- nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port")
-      quadratic_AICc <- MuMIn::AICc(quadratic)
-
-      single_asset_variance_sims_quad <- predict_quad_gelm(quadratic, n.sims = n_gelman_hill_sims,
-                                                           single_asset_mean = single_asset_mean)
-      single_asset_variance_sims_linear <- predict_linear_gelm(linear, n.sims = n_gelman_hill_sims,
-                                                               single_asset_mean = single_asset_mean)
-      min_AICc <- min(linear_AICc, quadratic_AICc)
-      w_linear <- exp(-linear_AICc / 2) / sum(exp(-linear_AICc / 2), exp(-quadratic_AICc / 2))
-      w_quadratic <- exp(-quadratic_AICc / 2) / sum(exp(-linear_AICc / 2), exp(-quadratic_AICc / 2))
-# now take the average of the predictions weighted by the AICc
-      linear_samples <- sample(single_asset_variance_sims_linear, size = n_gelman_hill_sims * w_linear)
-      quad_samples <- sample(single_asset_variance_sims_linear, size = n_gelman_hill_sims * w_quadratic)
-      single_asset_variance_ci <- exp(quantile(c(linear_samples, quad_samples), prob = c(0.025, 0.975)))
-      cv_single_asset_ci <- as.numeric(sqrt(single_asset_variance_ci) / single_asset_mean)
-      pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
-      pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
-      out <- list(pe = pe, ci = pe_ci)
-      }  else {
+        linear <- nls(log.v ~ B0 + B1 * log.m, data = d, start =
+            list(B0 = 0, B1 = 2), lower = list(B0 = -1e9, B1 = 0),
+          algorithm = "port")
+        linear_AICc <- MuMIn::AICc(linear)
+        quadratic <- nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2),
+          data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower =
+            list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port")
+        quadratic_AICc <- MuMIn::AICc(quadratic)
+        
+        min_AICc <- min(linear_AICc, quadratic_AICc)
+        out <- pe
+      }else{
         single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
         cv_single_asset_ci <- sqrt(single_asset_variance_ci) / single_asset_mean
         pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
         pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
         out <- list(pe = pe, ci = pe_ci)
-  } }}
+      } # end linear case 
+    } # end linear-quad avg
+  } # end CI TRUE and boot FALSE
+  
   pe_mv_for_boot <- function(x) {
     m <- apply(x, 2, mean)
     v <- apply(x, 2, var)
@@ -177,6 +179,7 @@ pe_mv <- function
     cv_portfolio <- cv(rowSums(x))
     pe <- cv_portfolio / cv_single_asset
   }
+  
   pe_mv_for_boot_quad <- function(x) {
     m <- apply(x, 2, mean)
     v <- apply(x, 2, var)
@@ -191,19 +194,18 @@ pe_mv <- function
     cv_portfolio <- cv(rowSums(x))
     pe <- cv_portfolio / cv_single_asset
   }
-
-if(ci & boot) {
-  require(boot)
-  if(fit_type == "quadratic")
-    boot.out <- boot(t(x), function(y, i) pe_mv_for_boot_quad(t(y[i,])), R = boot_reps)
-  else
-    boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
-  pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
-  out <- list(pe = pe, ci = pe_ci)
-}
+  
+  if(ci & boot) {
+    require(boot)
+    if(fit_type == "quadratic")
+      boot.out <- boot(t(x), function(y, i) pe_mv_for_boot_quad(t(y[i,])), R = boot_reps)
+    else
+      boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
+    
+    pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
+    out <- list(pe = pe, ci = pe_ci)
+  }
   if(ci == FALSE) out <- pe
-
   out
-
 }
 
