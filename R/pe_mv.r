@@ -65,7 +65,10 @@ pe_mv <- function
     FALSE, boot = FALSE, boot_reps = 1000
 )
 {
-  require(MuMIn) # for AICc
+  
+  if(boot) require(boot)
+  if(fit_type == "linear_quad_avg") require(MuMIn)
+  if(fit_type == "linear_robust") require(robustbase) 
   
   ## first get the means:
   m <- apply(x, 2, mean)
@@ -96,13 +99,12 @@ pe_mv <- function
   log.m <- log(m)
   log.v <- log(v)
   d <- data.frame(log.m = log.m, log.v = log.v, m = m, v = v)
+  
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
     linear_robust = {
-      require(robustbase) # for lmrob
       lmrob(log.v ~ log.m, data = d, control =
         lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
-    # using nls so we can restrict the quadratic term to be >= 0
   }
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
       = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
@@ -116,10 +118,11 @@ pe_mv <- function
       quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
         = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
             -1e9, B1 = 0, B2 = 0), algorithm = "port")
-      require(MuMIn)
       avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
-      if(MuMIn::AICc(quadratic) < MuMIn::AICc(linear)) print("AICc quad is lower")
-      if(MuMIn::AICc(quadratic) + 2 < MuMIn::AICc(linear)) print("AICc quad is at least 2 units lower")
+      #if(MuMIn::AICc(quadratic) < MuMIn::AICc(linear)) 
+       # print("AICc quad is lower")
+      #if(MuMIn::AICc(quadratic) + 2 < MuMIn::AICc(linear)) 
+       # print("AICc quad is at least 2 units lower")
       avg.mod
     }
   )
@@ -134,8 +137,6 @@ pe_mv <- function
   pe <- as.numeric(cv_portfolio / cv_single_asset)
   
   if(ci == TRUE & boot == FALSE) {
-    
-    require(MuMIn)
     if(fit_type %in% c("quadratic")) {
       single_asset_variance_sims <- predict_quad_gelm(taylor_fit, n.sims = n_gelman_hill_sims,
         single_asset_mean = single_asset_mean)
@@ -198,7 +199,6 @@ pe_mv <- function
   }
   
   if(ci & boot) {
-    require(boot)
     if(fit_type == "quadratic")
       boot.out <- boot(t(x), function(y, i) pe_mv_for_boot_quad(t(y[i,])), R = boot_reps)
     else
