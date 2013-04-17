@@ -1,0 +1,14 @@
+Package: ecofolio
+Maintainer: Sean Anderson <sean@seananderson.ca>
+Author: seananderson
+Version: 0.1
+License: GPL-3
+Title: ecofolio
+Description: Functions to quantify phenomenological ecological portfolio
+    effects. The functions currently focus on single-species metapopulation.
+Collate:
+    'ecofolio-package.r'
+    'cv.r'
+    'pe_avg_cv.r'
+    'pe_mv.r'
+    'fit_taylor.r'

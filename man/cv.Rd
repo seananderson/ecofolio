@@ -1,0 +1,16 @@
+\name{cv}
+\alias{cv}
+\title{Calculate the coefficient of variation}
+\usage{
+  cv(x)
+}
+\arguments{
+  \item{x}{A numeric vector}
+}
+\description{
+  Calculate the coefficient of variation
+}
+\examples{
+cv(rnorm(20))
+}
+
