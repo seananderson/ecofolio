@@ -60,7 +60,9 @@
 # extra code, go to long format data
 
 pe_mv <- function
-(x, fit_type = c("linear", "linear_robust", "quadratic", "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci = FALSE, boot = FALSE, boot_reps = 1000
+(x, fit_type = c("linear", "linear_robust", "quadratic",
+    "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
+  FALSE, boot = FALSE, boot_reps = 1000
 )
 {
   require(MuMIn) # for AICc
@@ -92,22 +94,18 @@ pe_mv <- function
 ## and get the variances for the assets:
   v <- apply(x, 2, var)
 
-  
   log.m <- log(m)
   log.v <- log(v)
   d <- data.frame(log.m = log.m, log.v = log.v, m = m, v = v)
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
     linear_robust = lmrob(log.v ~ log.m, data = d, control = lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
-# now using nls so we can restrict the quadratic term to be >= 0
-    #quadratic = lm(log.v ~ log.m + I(log.m ^ 2), data = d),
+    # using nls so we can restrict the quadratic term to be >= 0
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port"),
     linear_detrended = lm(log.v ~ log.m, data = d),
     loess_detrended = lm(log.v ~ log.m, data = d),
     linear_quad_avg = {
     linear = nls(log.v ~ B0 + B1 * log.m, data = d, start = list(B0 = 0, B1 = 2), lower = list(B0 = -1e9, B1 = 0), algorithm = "port")
-      #linear <-  lm(log.v ~ log.m, data = d)
-      #quadratic <- lm(log.v ~ log.m + I(log.m ^ 2), data = d)
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port")
       require(MuMIn)
       avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
@@ -116,14 +114,6 @@ pe_mv <- function
       avg.mod
     }
   )
-  #linear_glm <-  glm(log.v ~ log.m, data = d)
-  #quadratic_glm <- glm(log.v ~ log.m + I(log.m ^ 2), data = d)
-  #require(boot)
-  #linear_glm_cv <- cv.glm(d, linear_glm)$delta[2]
-  #quadratic_glm_cv <- cv.glm(d, quadratic_glm)$delta[2]
-
-  #linear_glm_cv <- AICc(linear_glm)
-  #quadratic_glm_cv <- AICc(quadratic_glm)
 
   single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)), se = TRUE)
   if(fit_type %in% c("quadratic", "linear_quad_avg")) 
@@ -131,7 +121,6 @@ pe_mv <- function
   else
     single_asset_variance <- exp(single_asset_variance_predict$fit)
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
-  #CV_portfolio <- CV(rowSums(x))
   pe <- as.numeric(cv_portfolio / cv_single_asset)
 
   if(ci == TRUE & boot == FALSE) {
