@@ -42,48 +42,46 @@
 #' 
 #' @export
 
-pe_avg_cv <- function (x, fit_type = c("not_detrended", "linear_detrended", 
-  "loess_detrended"),  ci = FALSE, boot_reps = 1000
-)
-{
-
-if(!fit_type[1] %in% c("not_detrended", "linear_detrended", "loess_detrended")) 
-  stop("not a valid fit_type")
-
-if(fit_type[1] == "not_detrended") {
-  cv_single_asset <- mean(apply(x, 2, cv))
-  cv_portfolio <- cv(rowSums(x))
-  pe <- cv_portfolio / cv_single_asset
-}
-
-if(fit_type[1] == "linear_detrended") {
-# single assets:
-  x_detrended <- x
-  for(i in 1:ncol(x)) x_detrended[,i] <- residuals(lm(x[,i]~c(1:nrow(x))))
-  single_asset_means <- apply(x, 2, mean)
-  single_asset_sds <- apply(x_detrended, 2, sd)
-  cv_single_asset <- mean(single_asset_sds / single_asset_means)
-# portfolio:
-  sd_portfolio <- sd(residuals(lm(rowSums(x)~c(1:nrow(x)))))
-  mean_portfolio <- mean(rowSums(x))
-  cv_portfolio <- sd_portfolio / mean_portfolio
-  pe <- cv_portfolio / cv_single_asset
-}
-
-if(fit_type[1] == "loess_detrended") {
-# single assets:
-  x_detrended <- x
-  for(i in 1:ncol(x)) x_detrended[,i] <- residuals(loess(x[,i]~c(1:nrow(x))))
-  single_asset_means <- apply(x, 2, mean)
-  single_asset_sds <- apply(x_detrended, 2, sd)
-  cv_single_asset <- mean(single_asset_sds / single_asset_means)
-# portfolio:
-  sd_portfolio <- sd(residuals(loess(rowSums(x)~c(1:nrow(x)))))
-  mean_portfolio <- mean(rowSums(x))
-  cv_portfolio <- sd_portfolio / mean_portfolio
-  pe <- cv_portfolio / cv_single_asset
-}
-
+pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended", 
+  "loess_detrended"),  ci = FALSE, boot_reps = 1000) {  
+  
+  if(!fit_type[1] %in% c("not_detrended", "linear_detrended", "loess_detrended")) 
+    stop("not a valid fit_type")
+  
+  if(fit_type[1] == "not_detrended") {
+    cv_single_asset <- mean(apply(x, 2, cv))
+    cv_portfolio <- cv(rowSums(x))
+    pe <- cv_portfolio / cv_single_asset
+  }
+  
+  if(fit_type[1] == "linear_detrended") {
+    # single assets:
+    x_detrended <- x
+    for(i in 1:ncol(x)) x_detrended[,i] <- residuals(lm(x[,i]~c(1:nrow(x))))
+    single_asset_means <- apply(x, 2, mean)
+    single_asset_sds <- apply(x_detrended, 2, sd)
+    cv_single_asset <- mean(single_asset_sds / single_asset_means)
+    # portfolio:
+    sd_portfolio <- sd(residuals(lm(rowSums(x)~c(1:nrow(x)))))
+    mean_portfolio <- mean(rowSums(x))
+    cv_portfolio <- sd_portfolio / mean_portfolio
+    pe <- cv_portfolio / cv_single_asset
+  }
+  
+  if(fit_type[1] == "loess_detrended") {
+    # single assets:
+    x_detrended <- x
+    for(i in 1:ncol(x)) x_detrended[,i] <- residuals(loess(x[,i]~c(1:nrow(x))))
+    single_asset_means <- apply(x, 2, mean)
+    single_asset_sds <- apply(x_detrended, 2, sd)
+    cv_single_asset <- mean(single_asset_sds / single_asset_means)
+    # portfolio:
+    sd_portfolio <- sd(residuals(loess(rowSums(x)~c(1:nrow(x)))))
+    mean_portfolio <- mean(rowSums(x))
+    cv_portfolio <- sd_portfolio / mean_portfolio
+    pe <- cv_portfolio / cv_single_asset
+  }
+  
   pe_avg_cv_for_boot <- function(x) {
     cv_single_asset <- mean(apply(x, 2, cv))
     cv_portfolio <- cv(rowSums(x))
@@ -91,7 +89,7 @@ if(fit_type[1] == "loess_detrended") {
     #pe
   }
   if(ci) {
-## confidence interval calculation
+    ## confidence interval calculation
     require(boot)
     boot.out <- boot(t(x), function(y, i) pe_avg_cv_for_boot(t(y[i,])), R = boot_reps)
     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
