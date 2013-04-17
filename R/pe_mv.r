@@ -66,7 +66,6 @@ pe_mv <- function
 )
 {
   require(MuMIn) # for AICc
-  require(robustbase) # for lmrob
   
   ## first get the means:
   m <- apply(x, 2, mean)
@@ -99,9 +98,12 @@ pe_mv <- function
   d <- data.frame(log.m = log.m, log.v = log.v, m = m, v = v)
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
-    linear_robust = lmrob(log.v ~ log.m, data = d, control =
+    linear_robust = {
+      require(robustbase) # for lmrob
+      lmrob(log.v ~ log.m, data = d, control =
         lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
     # using nls so we can restrict the quadratic term to be >= 0
+  }
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
       = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
           -1e9, B1 = 0, B2 = 0), algorithm = "port"),
