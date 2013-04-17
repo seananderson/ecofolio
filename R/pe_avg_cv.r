@@ -45,6 +45,10 @@
 pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended", 
   "loess_detrended"),  ci = FALSE, boot_reps = 1000) {  
   
+  if(ci = TRUE){
+    require(boot)
+  }
+  
   if(!fit_type[1] %in% c("not_detrended", "linear_detrended", "loess_detrended")) 
     stop("not a valid fit_type")
   
@@ -90,7 +94,6 @@ pe_avg_cv <- function(x, fit_type = c("not_detrended", "linear_detrended",
   }
   if(ci) {
     ## confidence interval calculation
-    require(boot)
     boot.out <- boot(t(x), function(y, i) pe_avg_cv_for_boot(t(y[i,])), R = boot_reps)
     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
     list(pe = pe, ci = pe_ci)
