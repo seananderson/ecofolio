@@ -59,14 +59,27 @@
 # TODO make parameters lower case throughout - error check - remove
 # extra code, go to long format data
 
-pe_mv <- function
-(x, fit_type = c("linear", "linear_robust", "quadratic",
+pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
-    FALSE, boot = FALSE, boot_reps = 1000
-)
-{
+    FALSE, boot = FALSE, boot_reps = 1000) {
   
-  if(boot) require(boot)
+  fit_type <- fit_type[1]
+  
+  if(!fit_type %in% c("linear", "linear_robust", "quadratic", "linear_quad_avg", "linear_detrended", "loess_detrended")) 
+    stop("not a valid fit_type")
+  
+  if(!fit_type %in% c("linear", "linear_detrended", "loess_detrended")){
+    if(ci == TRUE | boot == TRUE){
+      warning("Confidence intervals aren't supported for this type of mean-variance model. Setting ci = FALSE and boot = FALSE.")
+    }
+    ci <- FALSE
+    boot <- FALSE
+  }
+  
+  if(boot == TRUE) ci <- TRUE
+  
+  ## load packages as required:
+  if(boot == TRUE) require(boot)
   if(fit_type == "linear_quad_avg") require(MuMIn)
   if(fit_type == "linear_robust") require(robustbase) 
   
@@ -103,9 +116,8 @@ pe_mv <- function
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
     linear_robust = {
-      lmrob(log.v ~ log.m, data = d, control =
-        lmrob.control("KS2011", max.it = 5000, maxit.scale = 5000)),
-  }
+      lmrob(log.v ~ log.m, data = d)
+    },
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
       = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
           -1e9, B1 = 0, B2 = 0), algorithm = "port"),
@@ -120,53 +132,32 @@ pe_mv <- function
             -1e9, B1 = 0, B2 = 0), algorithm = "port")
       avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
       #if(MuMIn::AICc(quadratic) < MuMIn::AICc(linear)) 
-       # print("AICc quad is lower")
+      # print("AICc quad is lower")
       #if(MuMIn::AICc(quadratic) + 2 < MuMIn::AICc(linear)) 
-       # print("AICc quad is at least 2 units lower")
+      # print("AICc quad is at least 2 units lower")
       avg.mod
     }
   )
   
+  if(ci == TRUE){
   single_asset_variance_predict <- predict(taylor_fit, newdata =
       data.frame(log.m = log(single_asset_mean)), se = TRUE)
-  if(fit_type %in% c("quadratic", "linear_quad_avg")) 
+  single_asset_variance <- exp(single_asset_variance_predict$fit)
+  }else{
+  single_asset_variance_predict <- predict(taylor_fit, newdata =
+      data.frame(log.m = log(single_asset_mean)))
     single_asset_variance <- exp(as.numeric(single_asset_variance_predict))
-  else
-    single_asset_variance <- exp(single_asset_variance_predict$fit)
+  }
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
   pe <- as.numeric(cv_portfolio / cv_single_asset)
   
   if(ci == TRUE & boot == FALSE) {
-    if(fit_type %in% c("quadratic")) {
-      single_asset_variance_sims <- predict_quad_gelm(taylor_fit, n.sims = n_gelman_hill_sims,
-        single_asset_mean = single_asset_mean)
-      single_asset_variance_ci <- exp(quantile(single_asset_variance_sims, prob = c(0.025, 0.975)))
-      cv_single_asset_ci <- as.numeric(sqrt(single_asset_variance_ci) / single_asset_mean)
-      pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
-      pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
-      out <- list(pe = pe, ci = pe_ci)
-    }else{
-      if(fit_type %in% c("linear_quad_avg")) {
-        linear <- nls(log.v ~ B0 + B1 * log.m, data = d, start =
-            list(B0 = 0, B1 = 2), lower = list(B0 = -1e9, B1 = 0),
-          algorithm = "port")
-        linear_AICc <- MuMIn::AICc(linear)
-        quadratic <- nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2),
-          data = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower =
-            list(B0 = -1e9, B1 = 0, B2 = 0), algorithm = "port")
-        quadratic_AICc <- MuMIn::AICc(quadratic)
-        
-        min_AICc <- min(linear_AICc, quadratic_AICc)
-        out <- pe
-      }else{
-        single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
-        cv_single_asset_ci <- sqrt(single_asset_variance_ci) / single_asset_mean
-        pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
-        pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
-        out <- list(pe = pe, ci = pe_ci)
-      } # end linear case 
-    } # end linear-quad avg
-  } # end CI TRUE and boot FALSE
+    single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
+    cv_single_asset_ci <- sqrt(single_asset_variance_ci) / single_asset_mean
+    pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
+    pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
+    out <- list(pe = pe, ci = pe_ci)
+  }
   
   pe_mv_for_boot <- function(x) {
     m <- apply(x, 2, mean)
@@ -183,31 +174,15 @@ pe_mv <- function
     pe <- cv_portfolio / cv_single_asset
   }
   
-  pe_mv_for_boot_quad <- function(x) {
-    m <- apply(x, 2, mean)
-    v <- apply(x, 2, var)
-    log.m <- log(m)
-    log.v <- log(v)
-    d <- data.frame(log.m = log.m, log.v = log.v)
-    taylor_fit <- nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data = d)
-    single_asset_mean <- mean(rowSums(x))
-    single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)))
-    single_asset_variance <- exp(as.numeric(single_asset_variance_predict))
-    cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
-    cv_portfolio <- cv(rowSums(x))
-    pe <- cv_portfolio / cv_single_asset
-  }
-  
-  if(ci & boot) {
-    if(fit_type == "quadratic")
-      boot.out <- boot(t(x), function(y, i) pe_mv_for_boot_quad(t(y[i,])), R = boot_reps)
-    else
-      boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
-    
+  if(ci == TRUE & boot == TRUE) {
+    boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
     out <- list(pe = pe, ci = pe_ci)
   }
-  if(ci == FALSE) out <- pe
+  
+  if(ci == FALSE) {
+    out <- pe
+  }
+  
   out
 }
-
