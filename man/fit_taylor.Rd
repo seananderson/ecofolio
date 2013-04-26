@@ -1,30 +1,32 @@
 \name{fit_taylor}
 \alias{fit_taylor}
-\title{Fit Taylor\'s power law and return the coefficients}
+\title{Fit Taylor's power law}
 \usage{
-  fit_taylor(x, ci = FALSE)
+  fit_taylor(x, ci = FALSE, na.rm = FALSE)
 }
 \arguments{
-  \item{x}{A matrix of abundance or biomass data. The
-  columns should represent different subpopulations or
-  species. The rows should represent the values through
-  time.}
+  \item{x}{A matrix or dataframe of abundance or biomass
+  data. The columns should represent different
+  subpopulations or species. The rows should represent the
+  values through time.}
 
-  \item{ci}{Logical value indicating whether 95\%
+  \item{ci}{A Logical value indicating whether 95\%
   confidence intervals should be calculated for the z value
-  (the exponent in Taylor\'s power law).}
+  (the exponent in Taylor's power law).}
+
+  \item{na.rm}{A logical value indicating whether \code{NA}
+  values should be row-wise deleted.}
 }
 \description{
-  Takes an input long-format data frame, fits Taylor\'s
-  power law to the temporal mean and variance in log-log
-  space and returns the coefficients.
+  Fits Taylor's power law to the temporal mean and variance
+  in log-log space and returns the coefficients.
 }
 \details{
   The function returns: A list containing the constant
-  \'c\' value and the exponent \'z\' in Taylor\'s power law
-  equation. If confidence intervals were requested then the
-  list will also contain \'ci\' with the 95\% confidence
-  intervals on the z value.
+  \code{c} value and the exponent \code{z} in Taylor's
+  power law equation. If confidence intervals were
+  requested then the list will also contain \code{ci} with
+  the 95\% confidence intervals on the z value.
 }
 \examples{
 dat = data.frame(x1 = rlnorm(20), x2 = rlnorm(20), x3 = rlnorm(20))

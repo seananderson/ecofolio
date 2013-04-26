@@ -3,16 +3,16 @@
 \title{Estimate the average-CV portfolio effect}
 \usage{
   pe_avg_cv(x,
-    fit_type = c("not_detrended", "linear_detrended", "loess_detrended"),
-    ci = FALSE, boot_reps = 1000)
+    detrending = c("not_detrended", "linear_detrended", "loess_detrended"),
+    ci = FALSE, boot_reps = 1000, na.rm = FALSE)
 }
 \arguments{
-  \item{x}{A matrix of abundance or biomass data. The
-  columns should represent different subpopulations or
-  species. The rows should represent the values through
-  time.}
+  \item{x}{A matrix or dataframe of abundance or biomass
+  data. The columns should represent different
+  subpopulations or species. The rows should represent the
+  values through time.}
 
-  \item{fit_type}{Character value describing if (and how)
+  \item{detrending}{Character value describing if (and how)
   the time series should be detrended before estimating the
   portfolio effect. Defaults to not detrending.}
 
@@ -22,6 +22,9 @@
   (bca) version of the bootstrap confidence interval.}
 
   \item{boot_reps}{Number of bootstrap replicates.}
+
+  \item{na.rm}{A logical value indicating whether \code{NA}
+  values should be row-wise deleted.}
 }
 \value{
   A numeric value representing the average-CV portfolio

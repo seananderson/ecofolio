@@ -4,25 +4,27 @@
 \usage{
   pe_mv(x,
     fit_type = c("linear", "linear_robust", "quadratic", "linear_quad_avg", "linear_detrended", "loess_detrended"),
-    ci = FALSE, boot = FALSE, boot_reps = 1000)
+    ci = FALSE, boot = FALSE, boot_reps = 1000,
+    na.rm = FALSE)
 }
 \arguments{
-  \item{x}{A matrix of abundance or biomass data. The
-  columns should represent different subpopulations or
-  species. The rows should represent the values through
-  time.}
+  \item{x}{A matrix or dataframe of abundance or biomass
+  data. The columns should represent different
+  subpopulations or species. The rows should represent the
+  values through time.}
 
   \item{fit_type}{Type of model to fit to the
   log(variance)-log(mean) data.  Options are: \itemize{
-  \item \code{linear}: linear regression, \item
-  \code{linear_robust}: robust linear regression \item
-  \code{quadratic}: quadratic regression \item
+  \item \code{linear}: linear regression (the default),
+  \item \code{linear_robust}: robust linear regression
+  \item \code{quadratic}: quadratic regression \item
   \code{linear_quad_avg}: AICc-weighted model averaging of
   linear and quadratic regression \item
   \code{linear_detrended}: detrend the time series with a
-  linear model before estimating z \item
-  \code{loess_detrended}: detrend the time series with a
-  loess smoother before estimating z }}
+  linear model before estimating z from a linear regression
+  \item \code{loess_detrended}: detrend the time series
+  with a loess smoother before estimating z from a linear
+  regression }}
 
   \item{ci}{Logical value describing whether a 95\%
   confidence interval should be calculated and returned
@@ -35,6 +37,9 @@
   model fit.}
 
   \item{boot_reps}{Number of bootstrap repetitions.}
+
+  \item{na.rm}{A logical value indicating whether \code{NA}
+  values should be row-wise deleted.}
 }
 \value{
   A numeric value representing the portfolio effect that

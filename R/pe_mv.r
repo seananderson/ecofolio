@@ -11,17 +11,19 @@
 #'   the portfolio CV is the same as in \code{\link{pe_avg_cv}} but the
 #'   calculation of the single asset system CV is different.
 #'   
-#' @param x A matrix of abundance or biomass data. The columns should represent
+#' @param x A matrix or dataframe of abundance or biomass data. The columns should represent
 #'   different subpopulations or species. The rows should represent the values
 #'   through time.
 #' @param fit_type Type of model to fit to the log(variance)-log(mean) data. 
-#'   Options are: \itemize{ \item \code{linear}: linear regression, \item
-#'   \code{linear_robust}: robust linear regression \item \code{quadratic}:
-#'   quadratic regression \item \code{linear_quad_avg}: AICc-weighted model
-#'   averaging of linear and quadratic regression \item \code{linear_detrended}:
-#'   detrend the time series with a linear model before estimating z \item
-#'   \code{loess_detrended}: detrend the time series with a loess smoother
-#'   before estimating z }
+#'   Options are: \itemize{ 
+#'   \item \code{linear}: linear regression (the default), 
+#'   \item \code{linear_robust}: robust linear regression 
+#'   \item \code{quadratic}: quadratic regression 
+#'   \item \code{linear_quad_avg}: AICc-weighted model averaging of linear and quadratic regression 
+#'   \item \code{linear_detrended}: detrend the time series with a linear model before estimating z from a linear regression
+#'   \item \code{loess_detrended}: detrend the time series with a loess smoother
+#'   before estimating z from a linear regression
+#'   }
 #' @param ci Logical value describing whether a 95\% confidence interval should 
 #'   be calculated and returned (defaults to \code{TRUE}).
 #' @param boot Logical value (defaults to \code{FALSE}). Determines whether the 
@@ -29,6 +31,7 @@
 #'   bootstrap instead of using the parametric confidence interval from the
 #'   linear model fit.
 #' @param boot_reps Number of bootstrap repetitions.
+#' @param na.rm A logical value indicating whether \code{NA} values should be row-wise deleted. 
 #'   
 #' @return A numeric value representing the portfolio effect that takes into 
 #'   account the mean-variance relationship. If confidence intervals were 
@@ -61,7 +64,7 @@
 
 pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
-    FALSE, boot = FALSE, boot_reps = 1000) {
+    FALSE, boot = FALSE, boot_reps = 1000, na.rm = FALSE) {
   
   fit_type <- fit_type[1]
   
@@ -82,6 +85,11 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   if(boot == TRUE) require(boot)
   if(fit_type == "linear_quad_avg") require(MuMIn)
   if(fit_type == "linear_robust") require(robustbase) 
+  
+  if(na.rm) x <- na.omit(x)
+  
+  total_nas <- sum(is.na(dat))
+  ifelse(!na.rm & total_nas > 0, return_na <- TRUE, return_na <- FALSE)
   
   ## first get the means:
   m <- apply(x, 2, mean)
@@ -183,6 +191,8 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   if(ci == FALSE) {
     out <- pe
   }
+  
+  if(return_na) out <- NA
   
   out
 }
