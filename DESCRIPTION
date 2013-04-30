@@ -12,3 +12,5 @@ Collate:
     'pe_avg_cv.r'
     'pe_mv.r'
     'fit_taylor.r'
+    'synchrony.r'
+    'thibaut_connolly_dsr.r'
