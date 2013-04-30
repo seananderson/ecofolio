@@ -51,12 +51,12 @@ pe_avg_cv(dat, ci = TRUE)
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
   and D. Thomson. 1998. The Statistical Inevitability of
   Stability-Diversity Relationships in Community Ecology.
-  Amer. Nat. 151:264–276.
+  Amer. Nat. 151:264-276.
 
   Tilman, D., C. Lehman, and C. Bristow. 1998.
   Diversity-Stability Relationships: Statistical
   Inevitability or Ecological Consequence? Amer. Nat.
-  151:277–282.
+  151:277-282.
 
   Schindler, D., R. Hilborn, B. Chasco, C. Boatright, T.
   Quinn, L. Rogers, and M. Webster. 2010. Population

@@ -14,7 +14,7 @@
   values through time.}
 
   \item{fit_type}{Type of model to fit to the
-  log(variance)-log(mean) data.  Options are: \itemize{
+  log(variance)-log(mean) data. Options are: \itemize{
   \item \code{linear}: linear regression (the default),
   \item \code{linear_robust}: robust linear regression
   \item \code{quadratic}: quadratic regression \item
@@ -70,24 +70,24 @@ pe_mv(dat)
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
-  and D.  Thomson. 1998. The Statistical Inevitability of
+  and D. Thomson. 1998. The Statistical Inevitability of
   Stability-Diversity Relationships in Community Ecology.
-  Amer. Nat. 151:264–276.
+  Amer. Nat. 151:264-276.
 
   Tilman, D., C. Lehman, and C. Bristow. 1998.
   Diversity-Stability Relationships: Statistical
-  Inevitability or Ecological Consequence? Amer.  Nat.
-  151:277–282.
+  Inevitability or Ecological Consequence? Amer. Nat.
+  151:277-282.
 
   Tilman, D. 1999. The Ecological Consequences of Changes
   in Biodiversity: A Search for General Principles. Ecology
-  80:1455–1474.
+  80:1455-1474.
 
   Taylor, L. 1961. Aggregation, Variance and the Mean.
-  Nature 189:732–735.  doi: 10.1038/189732a0.
+  Nature 189:732-735. doi: 10.1038/189732a0.
 
   Taylor, L., I. Woiwod, and J. Perry. 1978. The
   Density-Dependence of Spatial Behaviour and the Rarity of
-  Randomness. J. Anim. Ecol. 47:383–406.
+  Randomness. J. Anim. Ecol. 47:383-406.
 }
 
