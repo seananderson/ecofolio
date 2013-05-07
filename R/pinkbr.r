@@ -21,6 +21,6 @@
 #'
 #' Krkošek, M., Ford, J.S., Morton, A., Lele, S., Myers, R.A. & Lewis,
 #' M.A. (2007). Declining Wild Salmon Populations in Relation to
-#' Parasites from Farm Salmon. Science, 318, 1772–1775.
+#' Parasites from Farm Salmon. Science, 318, 1772-1775.
 NULL
 
