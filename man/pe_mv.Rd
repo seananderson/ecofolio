@@ -65,8 +65,8 @@
   asset system CV is different.
 }
 \examples{
-dat = data.frame(x1 = rnorm(20, 10), x2 = rnorm(20, 10), x3 = rnorm(20,10))
-pe_mv(dat)
+data(pinkbr)
+pe_mv(pinkbr[,-1])
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
