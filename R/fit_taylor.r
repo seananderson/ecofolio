@@ -28,8 +28,8 @@
 #' Variance/Mean Population Parameters. J. Anim. Ecol. 51:879-906.
 #' @export
 #' @examples
-#' dat = data.frame(x1 = rlnorm(20), x2 = rlnorm(20), x3 = rlnorm(20))
-#' fit_taylor(dat)
+#' data(pinkbr)
+#' fit_taylor(pinkbr[,-1])
 
 fit_taylor <- function(x, ci = FALSE, na.rm = FALSE){
   if(na.rm) x <- na.omit(x)

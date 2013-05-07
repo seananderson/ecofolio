@@ -29,8 +29,8 @@
   the 95\% confidence intervals on the z value.
 }
 \examples{
-dat = data.frame(x1 = rlnorm(20), x2 = rlnorm(20), x3 = rlnorm(20))
-fit_taylor(dat)
+data(pinkbr)
+fit_taylor(pinkbr[,-1])
 }
 \references{
   Taylor, L. 1961. Aggregation, Variance and the Mean.
