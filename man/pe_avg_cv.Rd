@@ -44,8 +44,8 @@
   combined total population.
 }
 \examples{
-dat = data.frame(x1 = rnorm(20), x2 = rnorm(20), x3 = rnorm(20))
-pe_avg_cv(dat)
+data(pinkbr)
+pe_avg_cv(pinkbr[,-1], ci = TRUE)
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,

@@ -40,8 +40,8 @@
 #' \code{ci}.
 #' 
 #' @examples 
-#' dat = data.frame(x1 = rnorm(20), x2 = rnorm(20), x3 = rnorm(20))
-#' pe_avg_cv(dat)
+#' data(pinkbr)
+#' pe_avg_cv(pinkbr[,-1], ci = TRUE)
 #' 
 #' @export
 
