@@ -60,8 +60,8 @@
 #' Behaviour and the Rarity of Randomness. J. Anim. Ecol. 47:383-406.
 #' @export
 #' @examples
-#' dat = data.frame(x1 = rnorm(20, 10), x2 = rnorm(20, 10), x3 = rnorm(20,10))
-#' pe_mv(dat)
+#' data(pinkbr)
+#' pe_mv(pinkbr[,-1])
 
 # TODO make parameters lower case throughout - error check - remove
 # extra code, go to long format data
