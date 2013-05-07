@@ -4,8 +4,7 @@
 \usage{
   pe_mv(x,
     fit_type = c("linear", "linear_robust", "quadratic", "linear_quad_avg", "linear_detrended", "loess_detrended"),
-    ci = FALSE, boot = FALSE, boot_reps = 1000,
-    na.rm = FALSE)
+    ci = FALSE, na.rm = FALSE)
 }
 \arguments{
   \item{x}{A matrix or dataframe of abundance or biomass
@@ -29,14 +28,6 @@
   \item{ci}{Logical value describing whether a 95\%
   confidence interval should be calculated and returned
   (defaults to \code{TRUE}).}
-
-  \item{boot}{Logical value (defaults to \code{FALSE}).
-  Determines whether the confidence interval should be
-  calculated using the (bias-adjusted) bootstrap instead of
-  using the parametric confidence interval from the linear
-  model fit.}
-
-  \item{boot_reps}{Number of bootstrap repetitions.}
 
   \item{na.rm}{A logical value indicating whether \code{NA}
   values should be row-wise deleted.}

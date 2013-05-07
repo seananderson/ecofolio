@@ -28,11 +28,11 @@
 #' }
 #' @param ci Logical value describing whether a 95\% confidence interval should
 #' be calculated and returned (defaults to \code{TRUE}).
-#' @param boot Logical value (defaults to \code{FALSE}). Determines whether the
-#' confidence interval should be calculated using the (bias-adjusted) bootstrap
-#' instead of using the parametric confidence interval from the linear model
-#' fit.
-#' @param boot_reps Number of bootstrap repetitions.
+# @param boot Logical value (defaults to \code{FALSE}). Determines whether the
+# confidence interval should be calculated using the (bias-adjusted) bootstrap
+# instead of using the parametric confidence interval from the linear model
+# fit.
+# @param boot_reps Number of bootstrap repetitions.
 #' @param na.rm A logical value indicating whether \code{NA} values should be
 #' row-wise deleted. 
 #'   
@@ -68,7 +68,7 @@
 
 pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
-    FALSE, boot = FALSE, boot_reps = 1000, na.rm = FALSE) {
+    FALSE, na.rm = FALSE) {
   
   fit_type <- fit_type[1]
   
@@ -77,16 +77,15 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   
   if(!fit_type %in% c("linear", "linear_detrended", "loess_detrended")){
     if(ci == TRUE | boot == TRUE){
-      warning("Confidence intervals aren't supported for this type of mean-variance model. Setting ci = FALSE and boot = FALSE.")
+      warning("Confidence intervals aren't supported for this type of mean-variance model. Setting ci = FALSE.")
     }
     ci <- FALSE
-    boot <- FALSE
   }
   
-  if(boot == TRUE) ci <- TRUE
+ # if(boot == TRUE) ci <- TRUE
   
   ## load packages as required:
-  if(boot == TRUE) require(boot)
+#  if(boot == TRUE) require(boot)
   if(fit_type == "linear_quad_avg") require(MuMIn)
   if(fit_type == "linear_robust") require(robustbase) 
   
@@ -163,34 +162,35 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
   pe <- as.numeric(cv_single_asset / cv_portfolio)
   
-  if(ci == TRUE & boot == FALSE) {
+ # if(ci == TRUE & boot == FALSE) {
+  if(ci == TRUE) {
     single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
     cv_single_asset_ci <- sqrt(single_asset_variance_ci) / single_asset_mean
-    pe_ci <- as.numeric(cv_portfolio / cv_single_asset_ci)
+    pe_ci <- as.numeric(cv_single_asset_ci / cv_portfolio)
     pe_ci <- pe_ci[order(pe_ci)] # make sure the lower value is first
     out <- list(pe = pe, ci = pe_ci)
   }
   
-  pe_mv_for_boot <- function(x) {
-    m <- apply(x, 2, mean)
-    v <- apply(x, 2, var)
-    log.m <- log(m)
-    log.v <- log(v)
-    d <- data.frame(log.m = log.m, log.v = log.v)
-    taylor_fit <- lm(log.v ~ log.m, data = d)
-    single_asset_mean <- mean(rowSums(x))
-    single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)), se = TRUE)
-    single_asset_variance <- exp(single_asset_variance_predict$fit)
-    cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
-    cv_portfolio <- cv(rowSums(x))
-    pe <- cv_single_asset / cv_portfolio
-  }
-  
-  if(ci == TRUE & boot == TRUE) {
-    boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
-    pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
-    out <- list(pe = pe, ci = pe_ci)
-  }
+#   pe_mv_for_boot <- function(x) {
+#     m <- apply(x, 2, mean)
+#     v <- apply(x, 2, var)
+#     log.m <- log(m)
+#     log.v <- log(v)
+#     d <- data.frame(log.m = log.m, log.v = log.v)
+#     taylor_fit <- lm(log.v ~ log.m, data = d)
+#     single_asset_mean <- mean(rowSums(x))
+#     single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)), se = TRUE)
+#     single_asset_variance <- exp(single_asset_variance_predict$fit)
+#     cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
+#     cv_portfolio <- cv(rowSums(x))
+#     pe <- cv_single_asset / cv_portfolio
+#   }
+#   
+#   if(ci == TRUE & boot == TRUE) {
+#     boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
+#     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
+#     out <- list(pe = pe, ci = pe_ci)
+#   }
   
   if(ci == FALSE) {
     out <- pe
@@ -200,3 +200,5 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   
   out
 }
+
+
