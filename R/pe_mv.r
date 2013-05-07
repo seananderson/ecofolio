@@ -76,7 +76,8 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     stop("not a valid fit_type")
   
   if(!fit_type %in% c("linear", "linear_detrended", "loess_detrended")){
-    if(ci == TRUE | boot == TRUE){
+ #   if(ci == TRUE | boot == TRUE){
+    if(ci == TRUE){
       warning("Confidence intervals aren't supported for this type of mean-variance model. Setting ci = FALSE.")
     }
     ci <- FALSE
