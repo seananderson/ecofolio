@@ -61,7 +61,11 @@
 #' @export
 #' @examples
 #' data(pinkbr)
-#' pe_mv(pinkbr[,-1])
+#' pe_mv(pinkbr[,-1], ci = TRUE)
+#' pe_mv(pinkbr[,-1], fit_type = "quadratic") # same as linear in this case
+#' pe_mv(pinkbr[,-1], fit_type = "linear_robust")
+#' pe_mv(pinkbr[,-1], fit_type = "linear_detrended", ci = TRUE)
+#' pe_mv(pinkbr[,-1], fit_type = "loess_detrended", ci = TRUE)
 
 # TODO make parameters lower case throughout - error check - remove
 # extra code, go to long format data
