@@ -92,7 +92,7 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   
   if(na.rm) x <- na.omit(x)
   
-  total_nas <- sum(is.na(dat))
+  total_nas <- sum(is.na(x))
   ifelse(!na.rm & total_nas > 0, return_na <- TRUE, return_na <- FALSE)
   
   ## first get the means:

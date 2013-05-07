@@ -34,7 +34,7 @@
 fit_taylor <- function(x, ci = FALSE, na.rm = FALSE){
   if(na.rm) x <- na.omit(x)
   
-  total_nas <- sum(is.na(dat))
+  total_nas <- sum(is.na(x))
   ifelse(!na.rm & total_nas > 0, return_na <- TRUE, return_na <- FALSE)
   
   m <- apply(x, 2, mean)
