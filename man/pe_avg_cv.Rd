@@ -45,7 +45,7 @@
 }
 \examples{
 data(pinkbr)
-pe_avg_cv(pinkbr[,-1], ci = TRUE)
+pe_avg_cv(pinkbr[,-1])
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
