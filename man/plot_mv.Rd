@@ -4,10 +4,9 @@
 \usage{
   plot_mv(x, show = c("linear", "quadratic", "robust"),
     col = c("#D95F02", "#1B9E77", "#E7298A"),
-    lty = c(1, 1, 1), pch_single_asset = c(1, 5, 6),
-    ci = FALSE, pch_subpops = 21, pch_port = 4,
-    add_z = TRUE, xlab = "log(mean)",
-    ylab = "log(variance)", ...)
+    lty = c(1, 1, 1), pch_sa = c(1, 5, 6), ci = FALSE,
+    pch_subpops = 21, pch_port = 4, add_z = TRUE,
+    xlab = "log(mean)", ylab = "log(variance)", ...)
 }
 \arguments{
   \item{x}{A matrix or dataframe of abundance or biomass
@@ -26,7 +25,7 @@
   vector of length 3 with the three values corresponding to
   \code{linear}, \code{quadratic}, \code{robust}.}
 
-  \item{pch_single_asset}{Point type for the extrapolated
+  \item{pch_sa}{Point type for the extrapolated
   "single-asset" portfolio. A vector of length 3 with the
   three values corresponding to \code{linear},
   \code{quadratic}, \code{robust}.}

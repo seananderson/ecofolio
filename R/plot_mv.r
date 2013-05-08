@@ -18,7 +18,7 @@
 #' length 3 with the three values corresponding to \code{linear},
 #' \code{quadratic},
 #' \code{robust}.                                                                                                                          
-#' @param pch_single_asset Point type for the extrapolated
+#' @param pch_sa Point type for the extrapolated
 #' "single-asset" portfolio. A vector of length 3 with the three
 #' values corresponding to \code{linear}, \code{quadratic},
 #' \code{robust}.
@@ -61,7 +61,7 @@
 
 plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
   = c("#D95F02", "#1B9E77", "#E7298A"), lty = c(1, 1, 1),
-  pch_single_asset = c(1, 5, 6), ci = FALSE, pch_subpops = 21,
+  pch_sa = c(1, 5, 6), ci = FALSE, pch_subpops = 21,
   pch_port = 4, add_z = TRUE, xlab = "log(mean)", ylab =
   "log(variance)", ...) {
 
@@ -101,7 +101,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
           overall.mean, length.out = 2)))
     p1 <- predict(m.t, newdata = data.frame(m = d1p), se = TRUE)
     p2 <- predict(m.t, newdata = data.frame(m = d2p), se = TRUE)
-    points((overall.mean), (overall.variance), col = col[1], pch = pch_single_asset[1],
+    points((overall.mean), (overall.variance), col = col[1], pch = pch_sa[1],
       lwd = 1.5, cex = 1.4)
     segments((min(mv$m)), exp(m.t.p[1]), (max(mv$m)), exp(m.t.p[2]),
       col = col[1], lty = lty[1])
@@ -120,7 +120,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
     p.quad.1 <- predict(m.t.quad, newdata = data.frame(m = d1p), se = FALSE)
     p.quad.2 <- predict(m.t.quad, newdata = data.frame(m = d2p), se = FALSE)
     points((overall.mean), (overall.variance.quad), col =col[2], pch =
-      pch_single_asset[2], lwd = 1.5, cex = 1.4)
+      pch_sa[2], lwd = 1.5, cex = 1.4)
     lines(d1p, exp(as.numeric(p.quad.1)), col = col[2], lwd = lty[2])
     lines(d2p, exp(as.numeric(p.quad.2)), col = col[2], lty = 2, lwd = 1.5)
   }
@@ -132,7 +132,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
     p.rob.1 <- predict(m.t.rob, newdata = data.frame(m = d1p), se = FALSE)
     p.rob.2 <- predict(m.t.rob, newdata = data.frame(m = d2p), se = FALSE)
     points((overall.mean), (overall.variance.rob), col = col[3], pch =
-      pch_single_asset[3], lwd = 1.5, cex = 1.1)
+      pch_sa[3], lwd = 1.5, cex = 1.1)
     lines(d1p, exp(p.rob.1), col = col[3], lty = lty[3])
     lines(d2p, exp(p.rob.2), col = col[3], lty = 2)
   }
