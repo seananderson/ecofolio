@@ -5,16 +5,18 @@
 #' extrapolation to the size of the metapopulation. The linear version
 #' of this model is referred to as Taylor's power law.
 #'
-#' @param x A matrix or dataframe of abundance or biomass data. The columns
-#' should represent different subpopulations or species. The rows should
-#' represent the values through time.
-#' @param show A vector of character objects indicating which mean-variance
-#' models to show.
-#' @param col Colour for the mean-variance model fit. A vector of length 3 with the three
-#' values corresponding to \code{linear}, \code{quadratic},
+#' @param x A matrix or dataframe of abundance or biomass data. The
+#' columns should represent different subpopulations or species. The
+#' rows should represent the values through time.
+#' @param show A vector of character objects indicating which
+#' mean-variance models to show.
+#' @param col Colour for the mean-variance model fit. A vector of
+#' length 3 with the three values corresponding to \code{linear},
+#' \code{quadratic},
 #' \code{robust}.                                                                                                                          
-#' @param lty Line type for the mean-variance model fit. A vector of length 3 with the three
-#' values corresponding to \code{linear}, \code{quadratic},
+#' @param lty Line type for the mean-variance model fit. A vector of
+#' length 3 with the three values corresponding to \code{linear},
+#' \code{quadratic},
 #' \code{robust}.                                                                                                                          
 #' @param pch_single_asset Point type for the extrapolated
 #' "single-asset" portfolio. A vector of length 3 with the three
@@ -84,7 +86,8 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
     p2 <- predict(m.t, newdata = data.frame(m = d2p), se = TRUE)
     points((overall.mean), (overall.variance), col = col[1], pch = pch_single_asset[1],
       lwd = 1.5, cex = 1.4)
-    segments((min(mv$m)), exp(m.t.p[1]), (max(mv$m)), exp(m.t.p[2]), col = col[1], lty = lty[1])
+    segments((min(mv$m)), exp(m.t.p[1]), (max(mv$m)), exp(m.t.p[2]),
+      col = col[1], lty = lty[1])
     segments((max(mv$m)), exp(m.t.p2[1]), (overall.mean),
       exp(m.t.p2[2]), lty = 2,  col = col[1])
     if(ci) {
@@ -121,4 +124,3 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
           format = "f")), side = 1, adj = 0.9, line = -1.2)
   }
 }
-
