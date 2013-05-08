@@ -5,7 +5,7 @@ Version: 0.1
 License: GPL-3
 Title: ecofolio
 Description: Functions to quantify phenomenological ecological portfolio
-    effects. The functions currently focus on single-species metapopulation.
+    effects. The functions focus on single-species metapopulations.
 Collate:
     'ecofolio-package.r'
     'cv.r'
