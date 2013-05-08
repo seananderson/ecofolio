@@ -26,8 +26,8 @@
 #' appears for the linear fit option.
 #' @param pch_subpops Point type for the subpopulations.
 #' @param pch_port Point type for the portfolio.
-#' @param add_z Logical. Taylor's power law z value (based on a linear
-#' model?).
+#' @param add_z Logical. Add Taylor's power law z value (based on a
+#' linear model)?
 #' @param xlab Label for x-axis.
 #' @param ylab Label for y-axis.
 #' @param ... Other values to pass to \code{plot}.

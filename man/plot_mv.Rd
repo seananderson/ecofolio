@@ -37,8 +37,8 @@
 
   \item{pch_port}{Point type for the portfolio.}
 
-  \item{add_z}{Logical. Taylor's power law z value (based
-  on a linear model?).}
+  \item{add_z}{Logical. Add Taylor's power law z value
+  (based on a linear model)?}
 
   \item{xlab}{Label for x-axis.}
 
