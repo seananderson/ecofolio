@@ -1,0 +1,190 @@
+\documentclass[12pt]{article}
+\usepackage{geometry} 
+\geometry{letterpaper}
+\usepackage{graphicx}
+\usepackage{Sweave}
+
+% \VignetteIndexEntry{An R Package for estimating ecological portfolio effects}
+% \VignetteKeyword{metapopulations}
+% \VignetteKeyword{ecology}
+
+%\usepackage[round]{natbib} 
+%\bibliographystyle{apalike}   
+%\bibpunct{(}{)}{;}{a}{}{;}   
+
+\title{Quantifying metapopulation portfolio effects with the \texttt{ecofolio} package}
+\author{Sean C. Anderson \and Andrew B. Cooper \and Nicholas K. Dulvy}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+This vignette accompanies the \texttt{ecofolio} \texttt{R} package and the
+manuscript \textit{Ecological prophets: Quantifying metapopulation portfolio
+effects}, which is in preparation for the journal \textit{Methods in Ecology and
+Evolution}. Here, we briefly illustrate the use and interpretation of the
+functions in the \texttt{ecofolio} package with a sample dataset.
+
+First, let's load the package and load the sample dataset. These data represent
+pink salmon recruits in the Broughton Archipelago for even years. Each column
+represents abundance for a different river through time. You can find these data
+in the supplementary materials of Krko\^sek et al.\ (2011) and they were
+originally collected by Fisheries and Oceans Canada.
+
+<<echo = true, results = verbatim>>=
+library(ecofolio)
+data(pinkbr)
+head(pinkbr)
+@
+
+\noindent
+Let's plot the time series:
+
+<<echo = true, results = verbatim, fig = true, height = 3, width = 6>>=
+library(reshape)
+library(ggplot2)
+x_long <- melt(pinkbr, id.vars = "year", variable_name = "river")
+ggplot(x_long, aes(year, value, colour = river)) + geom_line()
+@
+
+\noindent
+We can estimate Taylor's power law for this population:
+
+<<echo = true, results = verbatim>>=
+fit_taylor(pinkbr[,-1])
+@
+
+\noindent
+These values reflect the equation:
+
+\begin{equation}
+\sigma^2 = c \mu^z
+\end{equation}
+
+\noindent
+where $\sigma^2$ is the temporal variance and $\mu$ is the temporal mean. The
+parameter $c$ does not affect the portfolio effect. The parameter $z$ is often
+referred to as Taylor's power law exponent. Specifically, \texttt{fit\_taylor}
+and the function \texttt{pe\_mv} fit the mean-variance relationship on a log-log
+scale:
+
+\begin{equation}
+  log(\sigma^2_i) = c + z \cdot log(\mu_i) + \epsilon_i
+  \label{eq:linear-taylor}
+\end{equation}
+
+\noindent 
+where $i$ represents an individual subpopulation, and $\epsilon_i$ represents
+independent and identically distributed residual error with mean zero and an
+estimated variance.
+
+The package also contains a function \texttt{plot\_mv} to visualize the various
+mean-variance model fits to empirical data. Let's look at the linear model we
+just fit:
+
+\setkeys{Gin}{width=0.6\textwidth}
+<<echo = true, results = verbatim, fig = true, height = 5, width = 5>>=
+plot_mv(pinkbr[,-1], show = "linear", ci = TRUE)
+@
+\setkeys{Gin}{width=0.8\textwidth}
+
+\noindent
+In this plot, we see the log(mean) and log(variance) values for each river as
+grey dots. The orange line shows the mean-variance fit. The $\times$ shows the
+observed metapopulation log(mean) and log(variance) values. The orange-open
+circle shows the expected log(variance) value at the observed log(mean) value
+for the metapopulation. The ratio of the y-value of the open-orange circle and
+the $\times$ represents the mean-variance portfolio effect. It's the ratio of
+the expected to the observed variability at the metapopulation size.
+
+%\begin{equation}
+  %log(\sigma^2_i) = \beta_0 + \beta_1 log(\mu_i) + \beta_2 log(\mu_i)^2 + 
+  %\epsilon_i, \quad \beta_2 \ge 0.
+  %\label{eq:quad-taylor}
+%\end{equation} 
+
+So, $z$ is around 2. Let's look at the default mean-variance portfolio effect,
+which uses the linear model we just fit:
+
+<<echo = true, results = verbatim>>=
+pe_mv(pinkbr[,-1], ci = TRUE)
+@
+
+\noindent
+This tells us that the metapopulation is 1.4 times more stable than if it acted
+as a homogeneous population. These (frequentist) confidence intervals indicate
+that under repeated conditions, we would expect 95\% of these intervals to
+contain the true value of the mean-variance portfolio effect given that our
+model is correct.
+
+We can compare this to the average-CV portfolio effect. In this case, we find
+that the average-CV portfolio effect is similar for this population. We would
+expect this given that Taylor's power law z-value is close to 2.
+
+<<echo = true, results = verbatim>>=
+pe_avg_cv(pinkbr[,-1], ci = TRUE, boot_reps = 500)
+@
+
+\noindent
+The \texttt{pe\_avg\_cv} function uses (bias-adjusted) bootstrap confidence
+intervals (\texttt{BCa} in the \texttt{boot} package). These confidence intervals are
+obtained by re-sampling the subpopulations with replacement and re-calculating
+the portfolio effect. If there aren't many subpopulations, these confidence
+intervals may not be an accurate reflection of the uncertainty in the average-CV
+portfolio effect.
+
+Returning to the mean-variance portfolio effect, we can explore whether
+different kinds of mean-variance extrapolations would yield different results.
+Let's fit some different mean-variance extrapolations:
+
+
+<<echo = true, results = verbatim>>=
+pe_mv(pinkbr[,-1], fit_type = "linear_robust")
+pe_mv(pinkbr[,-1], fit_type = "quadratic")
+pe_mv(pinkbr[,-1], fit_type = "linear_quad_avg")
+@
+
+The \texttt{quadratic} and \texttt{linear\_quad\_avg} options give us the same
+value as the \texttt{linear} version because the quadratic model curvature has
+been bounded to only curve up. In this case, they simplify to the linear model.
+We could look at these using the \texttt{plot\_mv} function:
+
+<<echo = true, results = verbatim, fig = true, height = 4, width = 8>>=
+par(mfrow = c(1, 2))
+plot_mv(pinkbr[,-1], show = "quadratic", add_z = FALSE)
+mtext("Quadratic")
+plot_mv(pinkbr[,-1], show = "robust", add_z = FALSE)
+mtext("Robust linear")
+@
+
+
+We can also try detrending the time series with linear or loess models to see
+how that affects the mean-variance portfolio effect. Estimates of variability
+such as the variance and CV can be biased upward if the time series are
+non-stationary.
+
+<<echo = true, results = verbatim>>=
+pe_mv(pinkbr[,-1], fit_type = "linear")
+pe_mv(pinkbr[,-1], fit_type = "linear_detrended")
+pe_mv(pinkbr[,-1], fit_type = "loess_detrended")
+@
+
+\noindent
+We've suppressed the confidence intervals here for brevity, but we can see that
+for this population, the estimates are similar whether or not we detrend the
+data.
+
+
+
+
+\section*{References}
+Krko\^sek, M., Connors, B.M., Morton, A., Lewis, M.A., Dill, L.M. \&
+Hilborn, R. (2011). Effects of parasites from salmon farms on
+productivity of wild salmon. Proceedings of the National Academy of
+Sciences of the United States of America, 108, 14700--14704.
+
+%\bibliography{/Users/seananderson/Dropbox/tex/jshort.bib,/Users/seananderson/Dropbox/tex/ref.bib}
+\end{document}
+
+
