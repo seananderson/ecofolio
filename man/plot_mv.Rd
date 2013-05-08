@@ -49,8 +49,10 @@
 }
 \description{
   Creates a scatter plot of the time series log(variance)
-  vs. log(mean). Shows a linear fit (Taylor's power law)
-  and extrapolation through the data.
+  vs. log(mean). Shows a model fit to the mean-variance
+  data and an extrapolation to the size of the
+  metapopulation. The linear version of this model is
+  referred to as Taylor's power law.
 }
 \examples{
 data(pinkbr)
