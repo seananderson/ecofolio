@@ -41,7 +41,7 @@
 #' 
 #' @examples 
 #' data(pinkbr)
-#' pe_avg_cv(pinkbr[,-1], ci = TRUE)
+#' pe_avg_cv(pinkbr[,-1])
 #' 
 #' @export
 
