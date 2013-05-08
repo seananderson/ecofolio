@@ -8,3 +8,10 @@ You can install this package with:
 library(devtools)
 install_github("ecofolio", username="seananderson")
 ```
+
+You can load the package and read the vignette and help pages with:
+```r
+library(ecofolio)
+vignette("ecofolio")
+help(package = "ecofolio")
+```
