@@ -1,7 +1,7 @@
 Package: ecofolio
 Maintainer: Sean Anderson <sean@seananderson.ca>
 Author: Sean Anderson
-Version: 0.1
+Version: 0.2
 License: GPL-3
 Title: ecofolio
 Description: Functions to quantify phenomenological ecological portfolio
