@@ -65,13 +65,10 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
   pch_port = 4, add_z = TRUE, xlab = "log(mean)", ylab =
   "log(variance)", ...) {
 
-  require(plyr)
-  require(reshape)
-
   ## get mean and variance of portfolio and assets:
-  x.long <- melt(x, id.vars = NULL)
+  x.long <- reshape::melt(x, id.vars = NULL)
   overall.d <- apply(x[,-1], 1, sum)
-  mv <- ddply(x.long, "variable", summarize, m = mean(value, na.rm =
+  mv <- plyr::ddply(x.long, "variable", summarize, m = mean(value, na.rm =
       TRUE), v = var(value, na.rm = TRUE))
   overall.mean <- mean(overall.d, na.rm = TRUE)
   portfolio.var <- var(overall.d, na.rm = TRUE)
@@ -125,12 +122,11 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
     lines(d2p, exp(as.numeric(p.quad.2)), col = col[2], lty = 2, lwd = 1.5)
   }
   if("robust" %in% show) {
-    require(robustbase)
-    m.t.rob <- lmrob(log(v) ~ log(m), data = mv)
-    overall.variance.rob <- exp(as.numeric(predict(m.t.rob, newdata =
+    m.t.rob <- robustbase::lmrob(log(v) ~ log(m), data = mv)
+    overall.variance.rob <- exp(as.numeric(robustbase::predict.lmrob(m.t.rob, newdata =
           data.frame(m = overall.mean))))
-    p.rob.1 <- predict(m.t.rob, newdata = data.frame(m = d1p), se = FALSE)
-    p.rob.2 <- predict(m.t.rob, newdata = data.frame(m = d2p), se = FALSE)
+    p.rob.1 <- robustbase::predict.lmrob(m.t.rob, newdata = data.frame(m = d1p), se = FALSE)
+    p.rob.2 <- robustbase::predict.lmrob(m.t.rob, newdata = data.frame(m = d2p), se = FALSE)
     points((overall.mean), (overall.variance.rob), col = col[3], pch =
       pch_sa[3], lwd = 1.5, cex = 1.1)
     lines(d1p, exp(p.rob.1), col = col[3], lty = lty[3])

@@ -67,6 +67,7 @@
 #' pe_mv(pinkbr[,-1], fit_type = "linear_detrended", ci = TRUE)
 #' pe_mv(pinkbr[,-1], fit_type = "loess_detrended", ci = TRUE)
 
+# TODO move predictions within model type to deal with robustbase name space
 
 pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
@@ -84,11 +85,6 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     }
     ci <- FALSE
   }
-  
-  
-  ## load packages as required:
-  if(fit_type == "linear_quad_avg") require(MuMIn)
-  if(fit_type == "linear_robust") require(robustbase) 
   
   if(na.rm) x <- na.omit(x)
   
@@ -128,7 +124,7 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   taylor_fit <- switch(fit_type[1], 
     linear =  lm(log.v ~ log.m, data = d),
     linear_robust = {
-      lmrob(log.v ~ log.m, data = d)
+      robustbase::lmrob(log.v ~ log.m, data = d)
     },
     quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
       = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
@@ -142,7 +138,7 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
       quadratic = nls(log.v ~ B0 + B1 * log.m + B2 * I(log.m ^ 2), data
         = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
             -1e9, B1 = 0, B2 = 0), algorithm = "port")
-      avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
+      avg.mod <- MuMIn::model.avg(list(linear=linear, quad=quadratic), rank = AICc)
       avg.mod
     }
   )
