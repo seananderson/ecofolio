@@ -67,8 +67,6 @@
 #' pe_mv(pinkbr[,-1], fit_type = "linear_detrended", ci = TRUE)
 #' pe_mv(pinkbr[,-1], fit_type = "loess_detrended", ci = TRUE)
 
-# TODO make parameters lower case throughout - error check - remove
-# extra code, go to long format data
 
 pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =
@@ -87,10 +85,8 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     ci <- FALSE
   }
   
- # if(boot == TRUE) ci <- TRUE
   
   ## load packages as required:
-#  if(boot == TRUE) require(boot)
   if(fit_type == "linear_quad_avg") require(MuMIn)
   if(fit_type == "linear_robust") require(robustbase) 
   
@@ -147,10 +143,6 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
         = d, start = list(B0 = 0, B1 = 2, B2 = 0), lower = list(B0 =
             -1e9, B1 = 0, B2 = 0), algorithm = "port")
       avg.mod <- model.avg(list(linear=linear, quad=quadratic), rank = AICc)
-      #if(MuMIn::AICc(quadratic) < MuMIn::AICc(linear)) 
-      # print("AICc quad is lower")
-      #if(MuMIn::AICc(quadratic) + 2 < MuMIn::AICc(linear)) 
-      # print("AICc quad is at least 2 units lower")
       avg.mod
     }
   )
@@ -167,7 +159,6 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
   cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
   pe <- as.numeric(cv_single_asset / cv_portfolio)
   
- # if(ci == TRUE & boot == FALSE) {
   if(ci == TRUE) {
     single_asset_variance_ci <- exp(single_asset_variance_predict$fit + c(-1.96, 1.96) * single_asset_variance_predict$se.fit)
     cv_single_asset_ci <- sqrt(single_asset_variance_ci) / single_asset_mean
@@ -176,27 +167,9 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     out <- list(pe = pe, ci = pe_ci)
   }
   
-#   pe_mv_for_boot <- function(x) {
-#     m <- apply(x, 2, mean)
-#     v <- apply(x, 2, var)
-#     log.m <- log(m)
 #     log.v <- log(v)
-#     d <- data.frame(log.m = log.m, log.v = log.v)
-#     taylor_fit <- lm(log.v ~ log.m, data = d)
-#     single_asset_mean <- mean(rowSums(x))
-#     single_asset_variance_predict <- predict(taylor_fit, newdata = data.frame(log.m = log(single_asset_mean)), se = TRUE)
-#     single_asset_variance <- exp(single_asset_variance_predict$fit)
-#     cv_single_asset <- sqrt(single_asset_variance) / single_asset_mean
 #     cv_portfolio <- cv(rowSums(x))
-#     pe <- cv_single_asset / cv_portfolio
-#   }
-#   
 #   if(ci == TRUE & boot == TRUE) {
-#     boot.out <- boot(t(x), function(y, i) pe_mv_for_boot(t(y[i,])), R = boot_reps)
-#     pe_ci <- boot.ci(boot.out, type = "bca")$bca[c(4,5)]
-#     out <- list(pe = pe, ci = pe_ci)
-#   }
-  
   if(ci == FALSE) {
     out <- pe
   }
