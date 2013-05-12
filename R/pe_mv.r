@@ -163,9 +163,6 @@ pe_mv <- function(x, fit_type = c("linear", "linear_robust", "quadratic",
     out <- list(pe = pe, ci = pe_ci)
   }
   
-#     log.v <- log(v)
-#     cv_portfolio <- cv(rowSums(x))
-#   if(ci == TRUE & boot == TRUE) {
   if(ci == FALSE) {
     out <- pe
   }
