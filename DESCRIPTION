@@ -1,11 +1,18 @@
 Package: ecofolio
-Maintainer: Sean Anderson <sean@seananderson.ca>
-Author: Sean Anderson
-Version: 0.2
+Version: 0.1
+Title: ecofolio: quantifying metapopulation portfolio effects
+Description: A financial portfolio metaphor is often used to describe
+    how population diversity can make a group of populations more
+    stable, much like how investing in a diverse set of assets makes a
+    portfolio more stable. This package contains functions to estimate
+    phenomenological ecological portfolio effects. Currently, the
+    functions focus mainly on single-species metapopulations.
+Authors@R: 'Sean Anderson <sean@seananderson.ca> [aut,cre]'
+Imports: plyr (>= 1.8), reshape (>= 0.8.4), boot (>= 1.3-9), 
+    MuMIn (>= 1.9.5), robustbase (>= 0.9-7)
+Depends:
+    R (>= 3.0.0)
 License: GPL-3
-Title: ecofolio
-Description: Functions to quantify phenomenological ecological portfolio
-    effects. The functions focus on single-species metapopulations.
 Collate:
     'ecofolio-package.r'
     'cv.r'
