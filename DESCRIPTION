@@ -6,7 +6,7 @@ Description: A financial portfolio metaphor is often used to describe
     stable, much like how investing in a diverse set of assets makes a
     portfolio more stable. This package contains functions to estimate
     phenomenological ecological portfolio effects. Currently, the
-    functions focus mainly on single-species metapopulations.
+    functions focus on single-species metapopulations.
 Authors@R: 'Sean Anderson <sean@seananderson.ca> [aut,cre]'
 Imports:
     plyr (>= 1.8),
