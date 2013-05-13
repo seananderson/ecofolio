@@ -123,7 +123,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
   }
   if("robust" %in% show) {
     m.t.rob <- robustbase::lmrob(log(v) ~ log(m), data = mv)
-    overall.variance.rob <- exp(as.numeric(robustbase::predict(m.t.rob, newdata =
+    overall.variance.rob <- exp(as.numeric(predict(m.t.rob, newdata =
           data.frame(m = overall.mean))))
     p.rob.1 <- predict(m.t.rob, newdata = data.frame(m = d1p), se = FALSE)
     p.rob.2 <- predict(m.t.rob, newdata = data.frame(m = d2p), se = FALSE)
