@@ -140,9 +140,9 @@ Let's fit some different mean-variance extrapolations:
 
 
 <<echo = true, results = verbatim>>=
-pe_mv(pinkbr[,-1], fit_type = "linear_robust")
-pe_mv(pinkbr[,-1], fit_type = "quadratic")
-pe_mv(pinkbr[,-1], fit_type = "linear_quad_avg")
+pe_mv(pinkbr[,-1], type = "linear_robust")
+pe_mv(pinkbr[,-1], type = "quadratic")
+pe_mv(pinkbr[,-1], type = "linear_quad_avg")
 @
 
 The \texttt{quadratic} and \texttt{linear\_quad\_avg} options give us the same
@@ -165,9 +165,9 @@ such as the variance and CV can be biased upward if the time series are
 non-stationary.
 
 <<echo = true, results = verbatim>>=
-pe_mv(pinkbr[,-1], fit_type = "linear")
-pe_mv(pinkbr[,-1], fit_type = "linear_detrended")
-pe_mv(pinkbr[,-1], fit_type = "loess_detrended")
+pe_mv(pinkbr[,-1], type = "linear")
+pe_mv(pinkbr[,-1], type = "linear_detrended")
+pe_mv(pinkbr[,-1], type = "loess_detrended")
 @
 
 \noindent
