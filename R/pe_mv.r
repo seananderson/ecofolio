@@ -14,7 +14,7 @@
 #' @param x A matrix or dataframe of abundance or biomass data. The columns
 #' should represent different subpopulations or species. The rows should
 #' represent the values through time.
-#' @param fit_type Type of model to fit to the log(variance)-log(mean) data.
+#' @param type Type of model to fit to the log(variance)-log(mean) data.
 #' Options are: \itemize{ 
 #' \item \code{linear}: linear regression (the default), 
 #' \item \code{linear_robust}: robust linear regression 
@@ -28,18 +28,14 @@
 #' }
 #' @param ci Logical value describing whether a 95\% confidence interval should
 #' be calculated and returned (defaults to \code{TRUE}).
-# @param boot Logical value (defaults to \code{FALSE}). Determines whether the
-# confidence interval should be calculated using the (bias-adjusted) bootstrap
-# instead of using the parametric confidence interval from the linear model
-# fit.
-# @param boot_reps Number of bootstrap repetitions.
 #' @param na.rm A logical value indicating whether \code{NA} values should be
 #' row-wise deleted. 
 #'   
-#' @return A numeric value representing the portfolio effect that takes into
-#' account the mean-variance relationship. If confidence intervals were
-#' requested then a list is returned with the portfolio effect (pe) and 95\%
-#' confidence interval (ci).
+#'
+#' @return A numeric value representing the portfolio effect that
+#' takes into account the mean-variance relationship. If confidence
+#' intervals were requested then a list is returned with the portfolio
+#' effect (\code{pe}) and 95\% confidence interval (\code{ci}).
 #'   
 #' @references 
 #' Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley, and D. Thomson.
@@ -53,8 +49,8 @@
 #' Tilman, D. 1999. The Ecological Consequences of Changes in Biodiversity: A
 #' Search for General Principles. Ecology 80:1455-1474.
 #' 
-#' Taylor, L. 1961. Aggregation, Variance and the Mean. Nature 189:732-735. doi:
-#' 10.1038/189732a0.
+#' Taylor, L. 1961. Aggregation, Variance and the Mean. Nature
+#' 189:732-735. doi: 10.1038/189732a0.
 #' 
 #' Taylor, L., I. Woiwod, and J. Perry. 1978. The Density-Dependence of Spatial
 #' Behaviour and the Rarity of Randomness. J. Anim. Ecol. 47:383-406.
@@ -62,10 +58,11 @@
 #' @examples
 #' data(pinkbr)
 #' pe_mv(pinkbr[,-1], ci = TRUE)
-#' pe_mv(pinkbr[,-1], fit_type = "quadratic") # same as linear in this case
-#' pe_mv(pinkbr[,-1], fit_type = "linear_robust")
-#' pe_mv(pinkbr[,-1], fit_type = "linear_detrended", ci = TRUE)
-#' pe_mv(pinkbr[,-1], fit_type = "loess_detrended", ci = TRUE)
+#' pe_mv(pinkbr[,-1], type = "quadratic") # same as linear in this case
+#' pe_mv(pinkbr[,-1], type = "linear_quad_avg")
+#' pe_mv(pinkbr[,-1], type = "linear_robust")
+#' pe_mv(pinkbr[,-1], type = "linear_detrended", ci = TRUE)
+#' pe_mv(pinkbr[,-1], type = "loess_detrended", ci = TRUE)
 
 # TODO move predictions within model type to deal with robustbase name space
 
