@@ -41,7 +41,8 @@
 #' 
 #' @examples 
 #' data(pinkbr)
-#' pe_avg_cv(pinkbr[,-1])
+#' pe_avg_cv(pinkbr[,-1], ci = TRUE)
+#' pe_avg_cv(pinkbr[,-1], detrending = "loess_detrended", ci = TRUE)
 #' 
 #' @export
 
