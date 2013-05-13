@@ -47,7 +47,7 @@
 #' @export
 
 pe_avg_cv <- function(x, detrending = c("not_detrended", "linear_detrended", 
-  "loess_detrended"),  ci = FALSE, boot_reps = 1000, na.rm = FALSE) {  
+  "loess_detrended"),  ci = FALSE, boot_reps = 500, na.rm = FALSE) {  
   
   if(!detrending[1] %in% c("not_detrended", "linear_detrended", "loess_detrended")) 
     stop("not a valid detrending type")
