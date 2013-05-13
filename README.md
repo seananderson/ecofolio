@@ -5,8 +5,7 @@ This package accompanies an in-progress manuscript by Sean Anderson, Andrew Coop
 You can install this package with:
 ```r
 # install.packages("devtools") # if needed
-library(devtools)
-install_github("ecofolio", username="seananderson")
+devtools::install_github("ecofolio", username="seananderson")
 ```
 
 You can load the package and read the vignette and help pages with:
