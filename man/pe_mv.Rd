@@ -54,6 +54,14 @@
   The calculation of the portfolio CV is the same as in
   \code{\link{pe_avg_cv}} but the calculation of the single
   asset system CV is different.
+
+  Currently, confidence intervals can only be returned for
+  \code{linear}, \code{linear_detrended}, and
+  \code{loess_detrended}. Otherwise, the value of \code{ci}
+  will be automatically turned to \code{FALSE}. It is not
+  obvious what a confidence interval should be given that
+  the quadratic term in the quadratic and linear-quadratic
+  averaged versions are bounded at 0.
 }
 \examples{
 data(pinkbr)
