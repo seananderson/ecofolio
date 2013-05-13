@@ -4,7 +4,7 @@
 \usage{
   pe_avg_cv(x,
     detrending = c("not_detrended", "linear_detrended", "loess_detrended"),
-    ci = FALSE, boot_reps = 1000, na.rm = FALSE)
+    ci = FALSE, boot_reps = 500, na.rm = FALSE)
 }
 \arguments{
   \item{x}{A matrix or dataframe of abundance or biomass
@@ -45,7 +45,8 @@
 }
 \examples{
 data(pinkbr)
-pe_avg_cv(pinkbr[,-1])
+pe_avg_cv(pinkbr[,-1], ci = TRUE)
+pe_avg_cv(pinkbr[,-1], detrending = "loess_detrended", ci = TRUE)
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,

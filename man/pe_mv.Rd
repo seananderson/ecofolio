@@ -3,7 +3,7 @@
 \title{Estimate the mean-variance portfolio effect}
 \usage{
   pe_mv(x,
-    fit_type = c("linear", "linear_robust", "quadratic", "linear_quad_avg", "linear_detrended", "loess_detrended"),
+    type = c("linear", "linear_robust", "quadratic", "linear_quad_avg", "linear_detrended", "loess_detrended"),
     ci = FALSE, na.rm = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@
   subpopulations or species. The rows should represent the
   values through time.}
 
-  \item{fit_type}{Type of model to fit to the
+  \item{type}{Type of model to fit to the
   log(variance)-log(mean) data. Options are: \itemize{
   \item \code{linear}: linear regression (the default),
   \item \code{linear_robust}: robust linear regression
@@ -36,8 +36,8 @@
   A numeric value representing the portfolio effect that
   takes into account the mean-variance relationship. If
   confidence intervals were requested then a list is
-  returned with the portfolio effect (pe) and 95\%
-  confidence interval (ci).
+  returned with the portfolio effect (\code{pe}) and 95\%
+  confidence interval (\code{ci}).
 }
 \description{
   Takes a matrix of abundance or biomass data and returns
@@ -58,10 +58,11 @@
 \examples{
 data(pinkbr)
 pe_mv(pinkbr[,-1], ci = TRUE)
-pe_mv(pinkbr[,-1], fit_type = "quadratic") # same as linear in this case
-pe_mv(pinkbr[,-1], fit_type = "linear_robust")
-pe_mv(pinkbr[,-1], fit_type = "linear_detrended", ci = TRUE)
-pe_mv(pinkbr[,-1], fit_type = "loess_detrended", ci = TRUE)
+pe_mv(pinkbr[,-1], type = "quadratic") # same as linear in this case
+pe_mv(pinkbr[,-1], type = "linear_quad_avg")
+pe_mv(pinkbr[,-1], type = "linear_robust")
+pe_mv(pinkbr[,-1], type = "linear_detrended", ci = TRUE)
+pe_mv(pinkbr[,-1], type = "loess_detrended", ci = TRUE)
 }
 \references{
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
