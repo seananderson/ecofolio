@@ -8,7 +8,7 @@ You can install this package with:
 devtools::install_github("ecofolio", username="seananderson")
 ```
 
-You can load the package and read the vignette and help pages with:
+You can load the package, read the vignette, and view the help pages with:
 ```r
 library(ecofolio)
 vignette("ecofolio")
