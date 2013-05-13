@@ -13,7 +13,7 @@
 #' @param col Colour for the mean-variance model fit. A vector of
 #' length 3 with the three values corresponding to \code{linear},
 #' \code{quadratic},
-#' \code{robust}.                                                                                                                          
+#' \code{robust}.
 #' @param lty Line type for the mean-variance model fit. A vector of
 #' length 3 with the three values corresponding to \code{linear},
 #' \code{quadratic},
