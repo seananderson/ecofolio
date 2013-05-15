@@ -66,7 +66,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
   "log(variance)", ...) {
 
   ## get mean and variance of portfolio and assets:
-  x.long <- reshape::melt(x, id.vars = NULL)
+  x.long <- reshape::melt.data.frame(x, id.vars = NULL)
   overall.d <- apply(x[,-1], 1, sum)
   mv <- plyr::ddply(x.long, "variable", summarize, m = mean(value, na.rm =
       TRUE), v = var(value, na.rm = TRUE))
