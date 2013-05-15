@@ -17,9 +17,9 @@
   portfolio effect. Defaults to not detrending.}
 
   \item{ci}{Logical value (defaults to \code{FALSE}).
-  Should a 95\% confidence interval should be calculated
-  using a bootstrap procedure? Returns the bias-corrected
-  (bca) version of the bootstrap confidence interval.}
+  Should a 95\% confidence interval be calculated using a
+  bootstrap procedure? Returns the bias-corrected (bca)
+  version of the bootstrap confidence interval.}
 
   \item{boot_reps}{Number of bootstrap replicates.}
 
