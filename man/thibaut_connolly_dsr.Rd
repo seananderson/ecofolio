@@ -35,4 +35,9 @@
 dat = data.frame(x1 = rnorm(20, 10), x2 = rnorm(20, 10), x3 = rnorm(20,10))
 thibaut_connolly_dsr(dat, synchrony = 0.7, z = 2, overyielding = 1)
 }
+\references{
+  Thibaut, L.M. & Connolly, S.R. (2013). Understanding
+  diversity-stability relationships: towards a unified
+  model of portfolio effects. Ecology Letters, 16, 140-150.
+}
 
