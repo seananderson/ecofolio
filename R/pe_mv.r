@@ -69,8 +69,9 @@
 #' pe_mv(pinkbr[,-1], type = "linear_robust")
 #' pe_mv(pinkbr[,-1], type = "linear_detrended", ci = TRUE)
 #' pe_mv(pinkbr[,-1], type = "loess_detrended", ci = TRUE)
-
-# TODO move predictions within model type to deal with robustbase name space
+#' @import robustbase
+# @importMethodsFrom robustbase predict.lmrob 
+# @importClassesFrom robustbase lmrob
 
 pe_mv <- function(x, type = c("linear", "linear_robust", "quadratic",
   "linear_quad_avg",  "linear_detrended", "loess_detrended"), ci =

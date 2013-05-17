@@ -58,6 +58,9 @@
 #' mtext("Quadratic")
 #' plot_mv(pinkbr[,-1], show = "robust", add_z = FALSE)
 #' mtext("Robust linear")
+#' @import robustbase
+# @importMethodsFrom robustbase predict.lmrob 
+# @importClassesFrom robustbase lmrob
 
 plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
   = c("#D95F02", "#1B9E77", "#E7298A"), lty = c(1, 1, 1),
@@ -122,7 +125,7 @@ plot_mv <- function(x, show = c("linear", "quadratic", "robust"), col
     lines(d2p, exp(as.numeric(p.quad.2)), col = col[2], lty = 2, lwd = 1.5)
   }
   if("robust" %in% show) {
-    m.t.rob <- robustbase::lmrob(log(v) ~ log(m), data = mv)
+    m.t.rob <- lmrob(log(v) ~ log(m), data = mv)
     overall.variance.rob <- exp(as.numeric(predict(m.t.rob, newdata =
           data.frame(m = overall.mean))))
     p.rob.1 <- predict(m.t.rob, newdata = data.frame(m = d1p), se = FALSE)
