@@ -7,7 +7,10 @@ Description: A financial portfolio metaphor is often used to describe
     financial portfolio more stable. This package contains functions
     to estimate phenomenological ecological portfolio effects.
     Currently, the functions focus on single-species metapopulations.
-Authors@R: 'Sean Anderson <sean@seananderson.ca> [aut,cre]'
+Authors@R: c(person("Sean", "Anderson", email =
+    "sean@seananderson.ca", role = c("aut", "cre")),
+    person("Nicholas", "Dulvy", role = "ths"), person("Andrew",
+    "Cooper", role = "ths"))
 Maintainer: Sean Anderson <sean@seananderson.ca>
 Imports:
     plyr (>= 1.8),
