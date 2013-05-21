@@ -1,10 +1,13 @@
-R package to measure various phenomenological ecological portfolio effects. The functions concentrate on single-species metapopulation portfolios.
+R package to measure various phenomenological ecological portfolio effects. The 
+functions concentrate on single-species metapopulation portfolios.
 
-This package accompanies an in-progress manuscript by Sean Anderson, Andrew Cooper, and Nick Dulvy (SFU, Canada).
+This package accompanies a manuscript submitted to Methods in Ecology and 
+Evolution by Sean Anderson, Andrew Cooper, and Nicholas Dulvy.
 
 You can install this package with:
 ```r
-# install.packages("devtools") # if needed
+# Install these first:
+# install.packages(c("plyr", "reshape", "MuMIn", "robustbase", "devtools"))
 devtools::install_github("ecofolio", username="seananderson")
 ```
 
