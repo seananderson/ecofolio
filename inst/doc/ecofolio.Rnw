@@ -20,10 +20,11 @@
 \maketitle
 
 \noindent
-This vignette accompanies the \texttt{ecofolio} \texttt{R} package and the
-manuscript \textit{Ecological prophets: Quantifying metapopulation portfolio
-effects}, which is in preparation for the journal \textit{Methods in Ecology and
-Evolution}. Here, we briefly illustrate the use and interpretation of the
+This vignette accompanies the \texttt{ecofolio} \texttt{R} package and
+the manuscript \textit{Ecological prophets: Quantifying metapopulation
+portfolio effects} by Sean C. Anderson, Andrew B. Cooper, and Nicholas
+K. Dulvy, for the journal \textit{Methods in Ecology and Evolution}.
+Here, we briefly illustrate the use and interpretation of the
 functions in the \texttt{ecofolio} package with a sample dataset.
 
 First, let's load the package and load the sample dataset. These data represent
