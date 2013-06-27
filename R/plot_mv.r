@@ -16,8 +16,7 @@
 #' \code{robust}.
 #' @param lty Line type for the mean-variance model fit. A vector of
 #' length 3 with the three values corresponding to \code{linear},
-#' \code{quadratic},
-#' \code{robust}.                                                                                                                          
+#' \code{quadratic}, \code{robust}.
 #' @param pch_sa Point type for the extrapolated
 #' "single-asset" portfolio. A vector of length 3 with the three
 #' values corresponding to \code{linear}, \code{quadratic},
