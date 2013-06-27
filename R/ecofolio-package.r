@@ -2,9 +2,12 @@
 #'
 #' @description
 #' The ecofolio package is a set of tools for estimating
-#' (metapopulation) ecological portfolio effects. It accompanies an
-#' in-progress manuscript to be re-submitted to Methods in Ecology and
-#' Evolution. 
+#' (metapopulation) ecological portfolio effects. It accompanies 
+#' the manuscript:
+#'
+#' Anderson, S.C., A.B. Cooper, N.K. Dulvy. Ecological prophets:
+#' Quantifying metapopulation portfolio effects. Methods in Ecology
+#' and Evolution.
 #'
 #' @details
 #' The ecological portfolio concept holds that we can
@@ -24,7 +27,7 @@
 #'
 #' The functions focus on single-species metapopulations or
 #' other analogous scenarios (e.g. fisheries catch of different
-#' species or other forms of spatially segregated population). Most of
+#' species or other forms of spatially segregated populations). Most of
 #' the functions are not appropriate to use with community data where
 #' the "assets" can strongly interact with each other. At present, the
 #' package includes two other metrics that can be used in this
