@@ -31,8 +31,9 @@
 #' @param ylab Label for y-axis.
 #' @param ... Other values to pass to \code{plot}.
 #' @references 
-#' Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Methods in Ecology
-#' and Evolution. In Press.
+#' Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological prophets:
+#' Quantifying metapopulation portfolio effects. Methods in Ecology and
+#' Evolution. In Press.
 #'
 #' Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley, and D.
 #' Thomson. 1998. The Statistical Inevitability of Stability-Diversity
