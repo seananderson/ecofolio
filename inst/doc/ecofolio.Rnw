@@ -21,7 +21,7 @@
 
 \noindent
 This vignette accompanies the \texttt{ecofolio} \texttt{R} package and
-the manuscript \textit{Ecological prophets: Quantifying metapopulation
+the paper \textit{Ecological prophets: Quantifying metapopulation
 portfolio effects} by Sean C. Anderson, Andrew B. Cooper, and Nicholas
 K. Dulvy, for the journal \textit{Methods in Ecology and Evolution}.
 Here, we briefly illustrate the use and interpretation of the
