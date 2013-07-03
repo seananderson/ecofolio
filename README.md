@@ -1,4 +1,4 @@
-`ecofolio` is an `R` package to estimate ecological portfolio effects.
+`ecofolio` is an R package to estimate ecological portfolio effects.
 Presently it focuses mainly on metapopulations.
 
 A financial portfolio metaphor is often used to describe how population
@@ -18,7 +18,7 @@ Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological prophets:
 Quantifying metapopulation portfolio effects. Methods in Ecology and
 Evolution. In Press.
 
-You can install `ecofolio` with the following `R` code:
+You can install `ecofolio` with the following R code:
 
 ```r
 # Install these first if needed:
