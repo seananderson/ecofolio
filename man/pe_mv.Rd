@@ -73,6 +73,9 @@ pe_mv(pinkbr[,-1], type = "linear_detrended", ci = TRUE)
 pe_mv(pinkbr[,-1], type = "loess_detrended", ci = TRUE)
 }
 \references{
+  Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Methods in
+  Ecology and Evolution. In Press.
+
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
   and D. Thomson. 1998. The Statistical Inevitability of
   Stability-Diversity Relationships in Community Ecology.

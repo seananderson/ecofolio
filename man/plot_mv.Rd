@@ -64,6 +64,9 @@ plot_mv(pinkbr[,-1], show = "robust", add_z = FALSE)
 mtext("Robust linear")
 }
 \references{
+  Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Methods in
+  Ecology and Evolution. In Press.
+
   Doak, D., D. Bigger, E. Harding, M. Marvier, R. O'Malley,
   and D. Thomson. 1998. The Statistical Inevitability of
   Stability-Diversity Relationships in Community Ecology.
