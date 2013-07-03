@@ -1,10 +1,11 @@
-`ecofolio` is an R package to estimate ecological portfolio effects.
+`ecofolio` is an `R` package to estimate ecological portfolio effects.
 Presently it focuses mainly on metapopulations.
 
 A financial portfolio metaphor is often used to describe how population
 diversity can make a group of populations more stable, much like how
 investing in a diverse set of assets makes a financial portfolio more
-stable. For example, we can treat the abundance of salmon in one stream as financial stock value salmon within a river catchment as
+stable. For example, we can treat the abundance of salmon in one stream
+as financial stock value and salmon within a river catchment as
 financial portfolios. 
 
 If a group of populations are stressed and react differently then the
@@ -13,7 +14,8 @@ a diversified financial portfolio. This risk reduction has been referred
 to as the "portfolio effect".
 
 To cite this package please cite the accompanying paper:  
-Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Methods in Ecology and
+Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological prophets:
+Quantifying metapopulation portfolio effects. Methods in Ecology and
 Evolution. In Press.
 
 You can install `ecofolio` with the following `R` code:
@@ -36,5 +38,5 @@ vignette("ecofolio")
 help(package = "ecofolio")
 ```
 
-If you have problems installing the package or using the functions, please
-email sean "at" seananderson.
+If you have problems installing the package or using the functions,
+please email sean "at" seananderson.
