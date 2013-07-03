@@ -2,12 +2,14 @@ citHeader("To cite package ecofolio in publications use:")
 
 citEntry(
  entry="Article",
- title="Ecological prophets: Quantifying metapopulation portfolio effects",
+ title="Ecological prophets: Quantifying metapopulation portfolio
+effects",
  journal="Methods in Ecology and Evolution",
  volume= "In Press",
  year="2013",
  author="Sean C. Anderson and Andrew B. Cooper and Nicholas K. Dulvy",
- textVersion="Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Methods in
+textVersion="Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological
+prophets: Quantifying metapopulation portfolio effects. Methods in
 Ecology and Evolution. In Press."
 )
 
