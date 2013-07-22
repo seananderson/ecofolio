@@ -12,9 +12,12 @@ a diversified financial portfolio. This risk reduction has been referred to as
 the "portfolio effect".
 
 To cite this package please cite the accompanying paper:  
+
 Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological prophets:
 Quantifying metapopulation portfolio effects. Methods in Ecology and
-Evolution. In Press.
+Evolution. In Press. doi: 10.1111/2041-210X.12093.
+
+The published version of the paper is available [here](http://dx.doi.org/10.1111/2041-210X.12093). And a pre-print is available [here](http://seananderson.ca/papers/Anderson_etal_2013_ecological_prophets.pdf) [PDF].
 
 You can install ecofolio with the following R code:
 
@@ -36,4 +39,4 @@ help(package = "ecofolio")
 ```
 
 If you have problems installing the package or using the functions, please
-email sean "at" seananderson.
+email sean "at" seananderson.ca.
