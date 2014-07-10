@@ -17,7 +17,7 @@
 #' Loreau, M. (2010). From Populations to Ecosystems: Theoretical
 #' Foundations for a New Ecological Synthesis. Princeton University
 #' Press, Princeton, NJ.
-#' 
+#'
 #' Thibaut, L.M. & Connolly, S.R. (2013). Understanding
 #' diversity-stability relationships: towards a unified model of
 #' portfolio effects. Ecology Letters, 16, 140-150.
