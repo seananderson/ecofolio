@@ -5,11 +5,14 @@ citEntry(
  title="Ecological prophets: Quantifying metapopulation portfolio
 effects",
  journal="Methods in Ecology and Evolution",
- volume= "In Press",
+ volume= "4",
+ number= "10"
  year="2013",
+ pages="971--981",
+ doi="http://dx.doi.org/10.1111/2041-210X.12093",
  author="Sean C. Anderson and Andrew B. Cooper and Nicholas K. Dulvy",
 textVersion="Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological
 prophets: Quantifying metapopulation portfolio effects. Methods in
-Ecology and Evolution. In Press."
+Ecology and Evolution. 4(10):971-981."
 )
 
