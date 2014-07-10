@@ -19,17 +19,7 @@ Imports:
     MuMIn (>= 1.9.5),
     robustbase (>= 0.9-7)
 Depends:
-    R (>= 2.14.0),
+    R (>= 3.10.0),
 Suggests:
     ggplot2 (>= 0.9.3.1)
 License: GPL-3
-Collate:
-    'ecofolio-package.r'
-    'cv.r'
-    'pe_avg_cv.r'
-    'pe_mv.r'
-    'fit_taylor.r'
-    'synchrony.r'
-    'thibaut_connolly_dsr.r'
-    'pinkbr.r'
-    'plot_mv.r'
