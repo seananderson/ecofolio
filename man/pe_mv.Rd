@@ -59,11 +59,13 @@ linear-quadratic averaged versions are bounded at 0.
 \examples{
 data(pinkbr)
 pe_mv(pinkbr[,-1], ci = TRUE)
+\dontrun{
 pe_mv(pinkbr[,-1], type = "quadratic") # same as linear in this case
 pe_mv(pinkbr[,-1], type = "linear_quad_avg")
 pe_mv(pinkbr[,-1], type = "linear_robust")
 pe_mv(pinkbr[,-1], type = "linear_detrended", ci = TRUE)
 pe_mv(pinkbr[,-1], type = "loess_detrended", ci = TRUE)
+}
 }
 \references{
 Anderson, S.C., A.B. Cooper, N.K. Dulvy. 2013. Ecological prophets:
