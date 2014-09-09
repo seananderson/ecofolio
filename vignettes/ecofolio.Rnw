@@ -1,16 +1,17 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{An R Package for estimating ecological portfolio effects}
+%\VignetteKeyword{metapopulations}
+%\VignetteKeyword{ecology}
+
 \documentclass[12pt]{article}
-\usepackage{geometry} 
+\usepackage{geometry}
 \geometry{letterpaper}
 \usepackage{graphicx}
-\usepackage{Sweave}
 
-% \VignetteIndexEntry{An R Package for estimating ecological portfolio effects}
-% \VignetteKeyword{metapopulations}
-% \VignetteKeyword{ecology}
 
-%\usepackage[round]{natbib} 
-%\bibliographystyle{apalike}   
-%\bibpunct{(}{)}{;}{a}{}{;}   
+%\usepackage[round]{natbib}
+%\bibliographystyle{apalike}
+%\bibpunct{(}{)}{;}{a}{}{;}
 
 \title{Quantifying metapopulation portfolio effects with the \texttt{ecofolio} package}
 \author{Sean C. Anderson \and Andrew B. Cooper \and Nicholas K. Dulvy}
@@ -33,7 +34,7 @@ represents abundance for a different river through time. You can find these data
 in the supplementary materials of Krko\^sek et al.\ (2011) and they were
 originally collected by Fisheries and Oceans Canada.
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 library(ecofolio)
 data(pinkbr)
 head(pinkbr)
@@ -42,7 +43,7 @@ head(pinkbr)
 \noindent
 Let's plot the time series:
 
-<<echo = true, results = verbatim, fig = true, height = 3, width = 6>>=
+<<echo=TRUE, results='markup', fig.height=3, fig.width=6>>=
 library(reshape)
 library(ggplot2)
 x_long <- melt(pinkbr, id.vars = "year", variable_name = "river")
@@ -52,7 +53,7 @@ ggplot(x_long, aes(year, value, colour = river)) + geom_line()
 \noindent
 We can estimate Taylor's power law for this population:
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 fit_taylor(pinkbr[,-1])
 @
 
@@ -75,7 +76,7 @@ scale:
   \label{eq:linear-taylor}
 \end{equation}
 
-\noindent 
+\noindent
 where $i$ represents an individual subpopulation, and $\epsilon_i$ represents
 independent and identically distributed residual error with mean zero and an
 estimated variance.
@@ -85,7 +86,7 @@ mean-variance model fits to empirical data. Let's look at the linear model we
 just fit:
 
 \setkeys{Gin}{width=0.6\textwidth}
-<<echo = true, results = verbatim, fig = true, height = 5, width = 5>>=
+<<echo=TRUE, results='markup', fig.height=5, fig.width=5>>=
 plot_mv(pinkbr[,-1], show = "linear", ci = TRUE)
 @
 \setkeys{Gin}{width=0.8\textwidth}
@@ -100,15 +101,15 @@ the $\times$ represents the mean-variance portfolio effect. It's the ratio of
 the expected to the observed variability at the metapopulation size.
 
 %\begin{equation}
-  %log(\sigma^2_i) = \beta_0 + \beta_1 log(\mu_i) + \beta_2 log(\mu_i)^2 + 
+  %log(\sigma^2_i) = \beta_0 + \beta_1 log(\mu_i) + \beta_2 log(\mu_i)^2 +
   %\epsilon_i, \quad \beta_2 \ge 0.
   %\label{eq:quad-taylor}
-%\end{equation} 
+%\end{equation}
 
 So, $z$ is around 2. Let's look at the default mean-variance portfolio effect,
 which uses the linear model we just fit:
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 pe_mv(pinkbr[,-1], ci = TRUE)
 @
 
@@ -123,7 +124,7 @@ We can compare this to the average-CV portfolio effect. In this case, we find
 that the average-CV portfolio effect is similar for this population. We would
 expect this given that Taylor's power law z-value is close to 2.
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 pe_avg_cv(pinkbr[,-1], ci = TRUE, boot_reps = 500)
 @
 
@@ -140,7 +141,7 @@ different kinds of mean-variance extrapolations would yield different results.
 Let's fit some different mean-variance extrapolations:
 
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 pe_mv(pinkbr[,-1], type = "linear_robust")
 pe_mv(pinkbr[,-1], type = "quadratic")
 pe_mv(pinkbr[,-1], type = "linear_quad_avg")
@@ -151,7 +152,7 @@ value as the \texttt{linear} version because the quadratic model curvature has
 been bounded to only curve up. In this case, they simplify to the linear model.
 We could look at these using the \texttt{plot\_mv} function:
 
-<<echo = true, results = verbatim, fig = true, height = 4, width = 8>>=
+<<echo=TRUE, results='markup', fig.height=4, fig.width=8>>=
 par(mfrow = c(1, 2))
 plot_mv(pinkbr[,-1], show = "quadratic", add_z = FALSE)
 mtext("Quadratic")
@@ -165,7 +166,7 @@ how that affects the mean-variance portfolio effect. Estimates of variability
 such as the variance and CV can be biased upward if the time series are
 non-stationary.
 
-<<echo = true, results = verbatim>>=
+<<echo=TRUE, results='markup'>>=
 pe_mv(pinkbr[,-1], type = "linear")
 pe_mv(pinkbr[,-1], type = "linear_detrended")
 pe_mv(pinkbr[,-1], type = "loess_detrended")

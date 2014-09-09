@@ -12,6 +12,7 @@ Authors@R: c(person(c("Sean", "C."), "Anderson", email =
     person(c("Nicholas", "K."), "Dulvy", role = "ths"),
     person(c("Andrew", "B."), "Cooper", role = "ths"))
 Maintainer: Sean C. Anderson <sean@seananderson.ca>
+VignetteBuilder: knitr
 Imports:
     plyr (>= 1.8),
     reshape (>= 0.8.4),
