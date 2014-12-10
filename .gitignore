@@ -6,3 +6,17 @@
 *.history
 
 inst/doc/.RData
+
+*.aux
+
+*.log
+
+vignettes/ecofolio.pdf
+
+vignettes/ecofolio.tex
+
+vignettes/figure/unnamed-chunk-2.pdf
+
+vignettes/figure/unnamed-chunk-4.pdf
+
+vignettes/figure/unnamed-chunk-8.pdf
