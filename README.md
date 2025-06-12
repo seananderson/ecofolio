@@ -22,7 +22,7 @@ The published version of the paper is available [here](http://dx.doi.org/10.1111
 You can install ecofolio with the following:
 
 ```r
-# Install these first if needed:
+# install.packages("pak")
 pak::pak("seananderson/ecofolio")
 ```
 
