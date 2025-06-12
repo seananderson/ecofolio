@@ -19,16 +19,12 @@ Evolution. In Press. doi: 10.1111/2041-210X.12093.
 
 The published version of the paper is available [here](http://dx.doi.org/10.1111/2041-210X.12093). And a pre-print is available [here](http://seananderson.ca/papers/Anderson_etal_2013_ecological_prophets.pdf) [PDF].
 
-You can install ecofolio with the following R code:
+You can install ecofolio with the following:
 
 ```r
 # Install these first if needed:
-# install.packages(c("plyr", "reshape", "MuMIn", "robustbase", "devtools"))
-devtools::install_github("ecofolio", username="seananderson")
+pak::pak("seananderson/ecofolio")
 ```
-
-If you're using Windows then you may need to install
-[Rtools](http://cran.r-project.org/bin/windows/Rtools/) first.
 
 You can load the package, read the vignette, and view the help pages with:
 
